@@ -55,17 +55,15 @@ public class TodoCommand implements MethodInterface {
                 }
                 if (menuNo == 1) {
                     int no = Prompt.inputInt("삭제할 리스트 번호 >>");
-                    Todo[] todoArray = getCompletedTasks();
+                    Todo[] todoArray = getPendingTasks();
                     int updateNo = todoArray[no - 1].getNo();
 
-                    int index = 0;
                     for (int i = 0; i < todoList.size(); i++) {
-                        if ((updateNo) == todoList.get(i).getNo()) {
-                            index = i;
+                        if (todoList.get(i).getNo() == updateNo) {
+                            todoList.remove(i);
                             break;
                         }
                     }
-                    todoList.remove(index);
                     System.out.println("삭제 완료.");
                     // printTask();
                 }

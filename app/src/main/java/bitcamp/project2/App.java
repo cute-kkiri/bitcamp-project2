@@ -30,7 +30,7 @@ public class App {
                 command = Prompt.input(">> ");
                 int menuNo = Integer.parseInt(command);
                 String menuTitle = getMenuTitle(menuNo, menus);
-                if(menuTitle == null) {
+                if (menuTitle == null) {
                     System.out.println("유효한 메뉴 번호를 입력해주세요.");
                 } else {
                     if (menuTitle.equals("종료")) {
