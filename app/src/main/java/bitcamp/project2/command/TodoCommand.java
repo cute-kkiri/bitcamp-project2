@@ -25,14 +25,14 @@ public class TodoCommand implements MethodInterface {
         String todo = Prompt.input("할일 작성 >>");
         String category = Prompt.input("카테고리 작성 >>");
         String memo = Prompt.input("메모 작성 >>");
-        int priorityIndex = 0;
-        while (priorityIndex == 0) {
+        while (true) {
             try {
-                priorityIndex = Prompt.inputInt("우선순위 설정 >>");
+                int priorityIndex = Prompt.inputInt("우선순위 설정 >>");
 
                 Todo todoItem = new Todo(todo, category, memo, priorityIndex);
                 todoList.add(todoItem);
                 System.out.println("추가 완료.");
+                break;
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
