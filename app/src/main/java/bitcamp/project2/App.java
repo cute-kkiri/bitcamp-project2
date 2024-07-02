@@ -30,42 +30,42 @@ public class App {
                 command = Prompt.input(">> ");
                 int menuNo = Integer.parseInt(command);
                 String menuTitle = getMenuTitle(menuNo, menus);
-                if (menuTitle.equals("종료")) {
-                    System.out.println("종료");
-                    break;
+                if(menuTitle == null) {
+                    System.out.println("유효한 메뉴 번호를 입력해주세요.");
                 } else {
-                    processMenu(menuTitle);
+                    if (menuTitle.equals("종료")) {
+                        System.out.println("종료");
+                        break;
+                    } else {
+                        processMenu(menuTitle);
+                    }
                 }
             } catch (NumberFormatException e) {
-                System.out.println();
+                System.out.println("숫자로 메뉴 번호를 입력해주세요.");
             }
         }
     }
 
     void processMenu(String menuTitle) {
-        try {
-            switch (menuTitle) {
-                case "리스트 추가":
-                    todoCommand.addTask();
-                    printMenu();
-                    break;
-                case "리스트 조회":
-                    todoCommand.viewTask();
-                    printMenu();
-                    break;
-                case "리스트 편집":
-                    todoCommand.updateTask();
-                    printMenu();
-                    break;
-                case "체크 하기":
-                    todoCommand.taskCheck();
-                    printMenu();
-                    break;
-                default:
-                    System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
-            }
-        } catch (NumberFormatException ex) {
-            System.out.println("숫자로 메뉴 번호를 입력하세요.");
+        switch (menuTitle) {
+            case "리스트 추가":
+                todoCommand.addTask();
+                printMenu();
+                break;
+            case "리스트 조회":
+                todoCommand.viewTask();
+                printMenu();
+                break;
+            case "리스트 편집":
+                todoCommand.updateTask();
+                printMenu();
+                break;
+            case "체크 하기":
+                todoCommand.taskCheck();
+                printMenu();
+                break;
+            default:
+                System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
         }
 
     }
