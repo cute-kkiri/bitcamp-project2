@@ -1,6 +1,7 @@
 package bitcamp.project2.command;
 
 
+import static bitcamp.project2.App.getCompletedTasks;
 import static bitcamp.project2.App.getPendingTasks;
 
 import bitcamp.project2.util.MethodInterface;
@@ -54,9 +55,12 @@ public class TodoCommand implements MethodInterface {
                 }
                 if (menuNo == 1) {
                     int no = Prompt.inputInt("삭제할 리스트 번호 >>");
+                    Todo[] todoArray = getCompletedTasks();
+                    int updateNo = todoArray[no - 1].getNo();
+
                     int index = 0;
                     for (int i = 0; i < todoList.size(); i++) {
-                        if ((no - 1) == todoList.get(i).getNo()) {
+                        if ((updateNo) == todoList.get(i).getNo()) {
                             index = i;
                             break;
                         }
