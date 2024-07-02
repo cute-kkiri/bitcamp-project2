@@ -1,6 +1,7 @@
 package bitcamp.project2.command;
 
-import static bitcamp.project2.App.printTask;
+
+import static bitcamp.project2.App.getPendingTasks;
 
 import bitcamp.project2.util.MethodInterface;
 import bitcamp.project2.util.Prompt;
@@ -24,14 +25,13 @@ public class TodoCommand implements MethodInterface {
         String category = Prompt.input("카테고리 작성 >>");
         String memo = Prompt.input("메모 작성 >>");
         int priorityIndex = 0;
-        while(priorityIndex == 0) {
+        while (priorityIndex == 0) {
             try {
                 priorityIndex = Prompt.inputInt("우선순위 설정 >>");
 
                 Todo todoItem = new Todo(todo, category, memo, priorityIndex);
                 todoList.add(todoItem);
                 System.out.println("추가 완료.");
-                printTask();
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
@@ -69,7 +69,7 @@ public class TodoCommand implements MethodInterface {
                     removeAllTask();
                     break;
                 }
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
         }
@@ -82,7 +82,6 @@ public class TodoCommand implements MethodInterface {
         if (command.equalsIgnoreCase("Y")) {
             todoList.removeAll(todoList);
             System.out.println("전체 삭제 완료.");
-            printTask();
             return 1;
         } else {
             System.out.println("삭제 취소.");
@@ -96,7 +95,7 @@ public class TodoCommand implements MethodInterface {
         System.out.println("1. 수정");
         System.out.println("2. 삭제");
         System.out.println("9. 이전");
-        while(true) {
+        while (true) {
             try {
                 int menuNo = Prompt.inputInt("편집/수정 >>");
                 if (menuNo == 9 || menuNo == 1 || menuNo == 2) {
@@ -105,27 +104,33 @@ public class TodoCommand implements MethodInterface {
                     }
                     if (menuNo == 1) {
                         int no = Prompt.inputInt("수정할 리스트 번호 >>");
+                        Todo[] taskArray = getPendingTasks();
+                        int updateNo;
                         Todo task = new Todo();
-                        for (Todo todo : todoList) {
-                            if ((no - 1) == todo.getNo()) {
-                                task = todo;
-                                break;
+                        updateNo = taskArray[no - 1].getNo();
+
+                        for (int i = 0; i < todoList.size(); i++) {
+                            if (todoList.get(i).getNo() == updateNo) {
+                                task = todoList.get(i);
                             }
                         }
 
-                        while(true) {
+                        while (true) {
                             try {
-                                int priorityIndex = Prompt.inputInt("%s (%d) >>", "우선 순위 수정", task.getPriorityIndex());
+                                int priorityIndex = Prompt.inputInt("%s (%d) >>", "우선 순위 수정",
+                                    task.getPriorityIndex());
                                 task.inputPriorityIndex(priorityIndex);
 
-                                task.inputTodo(Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
-                                task.inputCategory(Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
+                                task.inputTodo(
+                                    Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
+                                task.inputCategory(
+                                    Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
                                 task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
 
                                 System.out.println("수정 완료.");
                                 break;
 //                                printTask();
-                            } catch(NumberFormatException ex) {
+                            } catch (NumberFormatException ex) {
                                 System.out.println("숫자로 우선순위를 입력하세요.");
                             }
                         }
@@ -136,7 +141,7 @@ public class TodoCommand implements MethodInterface {
                 } else {
                     System.out.println("잘못된 메뉴 번호입니다.");
                 }
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
         }
@@ -149,11 +154,10 @@ public class TodoCommand implements MethodInterface {
         while (true) {
             try {
                 System.out.println();
-                printTask();
                 System.out.println("0번을 누르면 이전으로 돌아갑니다.");
                 int no = Prompt.inputInt("체크할 리스트 번호 >>");
                 Todo task;
-                if(no == 0) {
+                if (no == 0) {
                     break;
                 }
                 for (int i = 0; i < todoList.size(); i++) {
@@ -164,8 +168,7 @@ public class TodoCommand implements MethodInterface {
                         break;
                     }
                 }
-                printTask();
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("체크할 항목을 숫자로 입력하세요.");
             }
         }
