@@ -1,16 +1,15 @@
 package bitcamp.project2.command;
 
-
-import static bitcamp.project2.App.getCompletedTasks;
-import static bitcamp.project2.App.getPendingTasks;
-
 import bitcamp.project2.util.MethodInterface;
 import bitcamp.project2.util.Prompt;
 import bitcamp.project2.vo.Todo;
+import bitcamp.project2.util.Tasks;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static bitcamp.project2.util.Tasks.*;
 
 public class TodoCommand implements MethodInterface {
 
@@ -55,7 +54,7 @@ public class TodoCommand implements MethodInterface {
                 }
                 if (menuNo == 1) {
                     int no = Prompt.inputInt("삭제할 리스트 번호 >>");
-                    Todo[] todoArray = getPendingTasks();
+                    Todo[] todoArray = Tasks.getPendingTasks();
                     int updateNo = todoArray[no - 1].getNo();
 
                     for (int i = 0; i < todoList.size(); i++) {
@@ -106,7 +105,7 @@ public class TodoCommand implements MethodInterface {
                     }
                     if (menuNo == 1) {
                         int no = Prompt.inputInt("수정할 리스트 번호 >>");
-                        Todo[] taskArray = getPendingTasks();
+                        Todo[] taskArray = Tasks.getPendingTasks();
                         int updateNo;
                         Todo task = new Todo();
                         updateNo = taskArray[no - 1].getNo();
@@ -178,10 +177,13 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public void viewTask() {
-        Todo task = new Todo();
-        for (int i = 0; i < todoList.size(); i++) {
-            System.out.println(task = todoList.get(i));
-        }
+        printPendingTasks();
+        printCompletedTasks();
+
+        
+//        for (int i = 0; i < todoList.size(); i++) {
+//            System.out.println(task = todoList.get(i));
+//        }
 
        /* Todo task = new Todo();
         int no = Prompt.inputInt("조회할 리스트 번호 >>");
