@@ -82,7 +82,7 @@ public class TodoCommand implements MethodInterface {
     public int removeAllTask() {
         String command = Prompt.input("전체 삭제하시겠습니까?(Y/N)");
         if (command.equalsIgnoreCase("Y")) {
-            todoList.removeAll(todoList);
+            todoList.clear();
             System.out.println("전체 삭제 완료.");
             return 1;
         } else {
@@ -133,14 +133,26 @@ public class TodoCommand implements MethodInterface {
                 System.out.println();
                 System.out.println("0번을 누르면 이전으로 돌아갑니다.");
                 int no = Prompt.inputInt("체크할 리스트 번호 >>");
+                Todo[] taskArray = getPendingTasks();
                 Todo task;
                 if (no == 0) {
                     break;
                 }
-                for (int i = 0; i < todoList.size(); i++) {
-                    if ((no - 1) == todoList.get(i).getNo()) {
-                        task = todoList.get(i);
-                        task.check();
+                if (no < 0 || no > taskArray.length) {
+                    System.out.println("유효한 리스트 번호가 아닙니다.");
+                    continue;
+                }
+                int checkNo = taskArray[no - 1].getNo();
+
+                for (int i = 0; i < taskArray.length; i++) {
+                    if (checkNo == taskArray[i].getNo()) {
+                        task = taskArray[i];
+                        if (!task.isCompleted()) {
+                            task.check();
+                        } else {
+                            System.out.println("이미 완료된 리스트입니다.");
+                            continue;
+                        }
                         System.out.println("체크 완료.");
                         break;
                     }
