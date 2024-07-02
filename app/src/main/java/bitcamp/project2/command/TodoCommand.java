@@ -1,9 +1,14 @@
 package bitcamp.project2.command;
 
-import static bitcamp.project2.App.printTask;
+
+import static bitcamp.project2.App.printPendingTasks;
+import static bitcamp.project2.App.printCompletedTasks;
+import static bitcamp.project2.App.printAllTasks;
 
 import bitcamp.project2.util.MethodInterface;
 import bitcamp.project2.util.Prompt;
+import bitcamp.project2.vo.CompletedTask;
+import bitcamp.project2.vo.PendingTask;
 import bitcamp.project2.vo.Todo;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,9 +18,13 @@ import java.util.stream.Collectors;
 public class TodoCommand implements MethodInterface {
 
     private List<Todo> todoList;
+    private List<PendingTask> pendingTasks;
+    private List<CompletedTask> completedTasks;
 
     public TodoCommand() {
         this.todoList = new ArrayList<>();
+        this.pendingTasks = new ArrayList<>();
+        this.completedTasks = new ArrayList<>();
     }
 
     @Override
@@ -29,7 +38,7 @@ public class TodoCommand implements MethodInterface {
 
         todoList.add(todoItem);
         System.out.println("추가 완료.");
-        printTask();
+        printPendingTasks();
         return 1;
     }
 
@@ -54,7 +63,7 @@ public class TodoCommand implements MethodInterface {
                 }
                 todoList.remove(index);
                 System.out.println("삭제 완료.");
-                printTask();
+                printPendingTasks();
             }
             if (menuNo == 2) {
                 removeAllTask();
@@ -72,7 +81,7 @@ public class TodoCommand implements MethodInterface {
         if (command.equalsIgnoreCase("Y")) {
             todoList.removeAll(todoList);
             System.out.println("전체 삭제 완료.");
-            printTask();
+            printPendingTasks();
             return 1;
         } else {
             System.out.println("삭제 취소.");
@@ -82,7 +91,7 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public int updateTask() {
-        System.out.println("1. 편집");
+        System.out.println("1. 수정");
         System.out.println("2. 삭제");
         System.out.println("9. 이전");
         int menuNo = Prompt.inputInt("메뉴 선택 >>");
@@ -107,7 +116,7 @@ public class TodoCommand implements MethodInterface {
                 task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
 
                 System.out.println("수정 완료.");
-                printTask();
+                printPendingTasks();
             }
             if (menuNo == 2) {
                 removeTask();
@@ -131,11 +140,13 @@ public class TodoCommand implements MethodInterface {
                 break;
             }
         }
-        printTask();
+        printPendingTasks();
     }
 
     @Override
     public void viewTask() {
+        printPendingTasks();
+
         Todo task = new Todo();
         int no = Prompt.inputInt("조회할 리스트 번호 >>");
         for (int i = 0; i < todoList.size(); i++) {
@@ -153,7 +164,8 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public List<Todo> viewTasks() {
-        return new ArrayList<>(todoList);
+        return todoList.stream().sorted(Comparator.comparingInt(Todo::getPriorityIndex))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -171,6 +183,41 @@ public class TodoCommand implements MethodInterface {
             .sorted(Comparator.comparingInt(Todo::getPriorityIndex))
             .collect(Collectors.toList());
     }
+
+    public static void printPendingTasks() {
+        String title = "No. 우선순위 할 일";
+
+        for (int i = 0; i < tasks.size(); i++) {
+            PendingTask pendingTask = new PendingTask();
+            pendingTask.setNo(i);
+            pendingTask.setCategory(tasks.get(i).getCategory());
+            pendingTask.setMemo(tasks.get(i).getMemo());
+            pendingTask.setPriorityIndex(tasks.get(i).getPriorityIndex());
+            pendingTask.setCompleted(false);
+            pendingTask.setTodo(tasks.get(i).getTodo());
+            pendingTasks.add(pendingTask);
+        }
+
+        if (tasks.size() == 0) {
+            System.out.println();
+            System.out.println("-------------------------");
+            System.out.println("등록된 리스트가 없습니다.");
+            System.out.println("-------------------------");
+        }
+
+        System.out.println();
+        if (pendingTasks.size() != 0) {
+            System.out.printf("미완료 목록 (%d)\n%s\n", pendingTasks.size(), title);
+            for (int i = 0; i < pendingTasks.size(); i++) {
+                PendingTask task = pendingTasks.get(i);
+                System.out.printf("%d \t \t %d \t \t %s\n",
+                    (task.getNo() + 1),
+                    task.getPriorityIndex(),
+                    task.getTodo());
+            }
+        }
+    }
+
 
     public void loadDummyData() {
         todoList.add(new Todo("정처기 공부하기", "Dummy Task 1", "테스트를 위한 더미 데이터1", 3, true));
