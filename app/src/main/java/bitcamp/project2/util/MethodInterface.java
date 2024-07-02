@@ -12,7 +12,7 @@ public interface MethodInterface {
 
     int removeAllTask();                                // 리스트 전체 삭제
 
-    int updateTask();                            // 리스트 수정
+    int updateTask();                            // 리스트 편집
 
     void viewTask();                              // 리스트 상세 조회
 

@@ -64,6 +64,7 @@ public class TodoCommand implements MethodInterface {
                         }
                     }
                     System.out.println("삭제 완료.");
+                    getPendingTasks();
                     // printTask();
                 }
                 if (menuNo == 2) {
@@ -93,58 +94,33 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public int updateTask() {
-        System.out.println("1. 수정");
-        System.out.println("2. 삭제");
-        System.out.println("9. 이전");
-        while (true) {
-            try {
-                int menuNo = Prompt.inputInt("편집/수정 >>");
-                if (menuNo == 9 || menuNo == 1 || menuNo == 2) {
-                    if (menuNo == 9) {
-                        break;
-                    }
-                    if (menuNo == 1) {
-                        int no = Prompt.inputInt("수정할 리스트 번호 >>");
-                        Todo[] taskArray = Tasks.getPendingTasks();
-                        int updateNo;
-                        Todo task = new Todo();
-                        updateNo = taskArray[no - 1].getNo();
+        int no = Prompt.inputInt("수정할 리스트 번호 >>");
+        Todo[] taskArray = Tasks.getPendingTasks();
+        int updateNo;
+        Todo task = new Todo();
+        updateNo = taskArray[no - 1].getNo();
 
-                        for (int i = 0; i < todoList.size(); i++) {
-                            if (todoList.get(i).getNo() == updateNo) {
-                                task = todoList.get(i);
-                            }
-                        }
-
-                        while (true) {
-                            try {
-                                int priorityIndex = Prompt.inputInt("%s (%d) >>", "우선 순위 수정",
-                                    task.getPriorityIndex());
-                                task.inputPriorityIndex(priorityIndex);
-
-                                task.inputTodo(
-                                    Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
-                                task.inputCategory(
-                                    Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
-                                task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
-
-                                System.out.println("수정 완료.");
-                                break;
-//                                printTask();
-                            } catch (NumberFormatException ex) {
-                                System.out.println("숫자로 우선순위를 입력하세요.");
-                            }
-                        }
-                    }
-                    if (menuNo == 2) {
-                        removeTask();
-                    }
-                } else {
-                    System.out.println("잘못된 메뉴 번호입니다.");
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("숫자로 메뉴 번호를 입력하세요.");
+        for (int i = 0; i < todoList.size(); i++) {
+            if (todoList.get(i).getNo() == updateNo) {
+                task = todoList.get(i);
             }
+        }
+
+        try {
+            int priorityIndex = Prompt.inputInt("%s (%d) >>", "우선 순위 수정",
+                    task.getPriorityIndex());
+            task.inputPriorityIndex(priorityIndex);
+
+            task.inputTodo(
+                    Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
+            task.inputCategory(
+                    Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
+            task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
+
+            System.out.println("수정 완료.");
+//                                printTask();
+        } catch (NumberFormatException ex) {
+            System.out.println("숫자로 우선순위를 입력하세요.");
         }
 
         return 1;
@@ -180,7 +156,7 @@ public class TodoCommand implements MethodInterface {
         printPendingTasks();
         printCompletedTasks();
 
-        
+
 //        for (int i = 0; i < todoList.size(); i++) {
 //            System.out.println(task = todoList.get(i));
 //        }

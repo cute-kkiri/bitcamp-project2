@@ -15,6 +15,7 @@ import static bitcamp.project2.util.Tasks.*;
 public class App {
 
     static String[] menus = new String[]{"리스트 추가", "리스트 조회", "리스트 편집", "체크 하기"};
+    String[] editMenus = {"수정", "삭제"};
 
 //    static TodoCommand todoCommand = new TodoCommand();
 
@@ -32,16 +33,17 @@ public class App {
             try {
                 command = Prompt.input(">> ");
                 int menuNo = Integer.parseInt(command);
-                String menuTitle = getMenuTitle(menuNo, menus);
-                if (menuTitle == null) {
-                    System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                if (menuNo == 0) {
+                    System.out.println("종료.");
+                    break;
                 } else {
-                    if (menuTitle.equals("종료")) {
-                        System.out.println("종료");
-                        break;
-                    } else {
-                        processMenu(menuTitle);
+                    String menuTitle = getMenuTitle(menuNo, menus);
+                    if(menuTitle == null) {
+                        System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                        continue;
                     }
+
+                    processMenu(menuTitle);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("숫자로 메뉴 번호를 입력해주세요.");
@@ -53,6 +55,7 @@ public class App {
         switch (menuTitle) {
             case "리스트 추가":
                 todoCommand.addTask();
+                printPendingTasks();
                 printMenu();
                 break;
             case "리스트 조회":
@@ -60,7 +63,8 @@ public class App {
                 printMenu();
                 break;
             case "리스트 편집":
-                todoCommand.updateTask();
+                editTask();
+                // todoCommand.updateTask();
                 printMenu();
                 break;
             case "체크 하기":
@@ -71,6 +75,42 @@ public class App {
                 System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
         }
 
+    }
+
+    void editTask() {
+        printSubMenu();
+        while (true) {
+            try {
+                int menuNo = Prompt.inputInt("편집 >>");
+
+                if (menuNo == 9) {
+                    break;
+                } else {
+                    String editMenuTitle = getMenuTitle(menuNo, editMenus);
+
+                    if(editMenuTitle == null) {
+                        System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                        continue;
+                    }
+
+                    switch (editMenuTitle) {
+                        case "수정": todoCommand.updateTask(); break;
+                        case "삭제": todoCommand.removeTask(); break;
+                    }
+                    break;
+                }
+
+            } catch (NumberFormatException ex) {
+                System.out.println("숫자로 메뉴 번호를 입력해주세요.");
+            }
+        }
+    }
+
+    void printSubMenu() {
+        for(int i = 0; i < editMenus.length; i++) {
+            System.out.printf("%d. %s\n", (i + 1), editMenus[i]);
+        }
+        System.out.println("9. 이전");
     }
 
     void printMenu() {
@@ -86,9 +126,6 @@ public class App {
     }
 
     String getMenuTitle(int menuNo, String[] menus) {
-        if (menuNo == 0) {
-            return "종료";
-        }
         return isValidateMenu(menuNo, menus) ? menus[menuNo - 1] : null;
     }
 }
