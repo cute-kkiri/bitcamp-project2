@@ -38,8 +38,8 @@ public class App {
                     break;
                 } else {
                     String menuTitle = getMenuTitle(menuNo, menus);
-                    if(menuTitle == null) {
-                        System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                    if (menuTitle == null) {
+                        System.out.println("유효한 메뉴 번호를 입력해 주세요.");
                         continue;
                     }
 
@@ -88,14 +88,18 @@ public class App {
                 } else {
                     String editMenuTitle = getMenuTitle(menuNo, editMenus);
 
-                    if(editMenuTitle == null) {
+                    if (editMenuTitle == null) {
                         System.out.println("유효한 메뉴 번호를 입력해주세요.");
                         continue;
                     }
 
                     switch (editMenuTitle) {
-                        case "수정": todoCommand.updateTask(); break;
-                        case "삭제": todoCommand.removeTask(); break;
+                        case "수정":
+                            todoCommand.updateTask();
+                            break;
+                        case "삭제":
+                            todoCommand.removeTask();
+                            break;
                     }
                     break;
                 }
@@ -107,7 +111,7 @@ public class App {
     }
 
     void printSubMenu() {
-        for(int i = 0; i < editMenus.length; i++) {
+        for (int i = 0; i < editMenus.length; i++) {
             System.out.printf("%d. %s\n", (i + 1), editMenus[i]);
         }
         System.out.println("9. 이전");

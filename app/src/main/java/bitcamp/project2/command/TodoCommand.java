@@ -48,35 +48,40 @@ public class TodoCommand implements MethodInterface {
         while (true) {
             try {
                 int menuNo = Prompt.inputInt("편집/삭제 >>");
-                if (menuNo == 9) {
-                    break;
-                }
-                if (menuNo == 1) {
-                    int no = Prompt.inputInt("삭제할 리스트 번호 >>");
-                    Todo[] taskArray = getPendingTasks();
-                    int updateNo;
-
-                    if (no >= 1 && no <= taskArray.length) {
-                        updateNo = taskArray[no - 1].getNo();
-                    } else {
-                        System.out.println("잘못된 번호입니다.");
-                        continue;
+                if (menuNo == 9 || menuNo == 1 || menuNo == 2) {
+                    if (menuNo == 9) {
+                        break;
                     }
+                    if (menuNo == 1) {
+                        int no = Prompt.inputInt("삭제할 리스트 번호 >>");
+                        Todo[] taskArray = getPendingTasks();
+                        int updateNo;
 
-                    for (int i = 0; i < todoList.size(); i++) {
-                        if (todoList.get(i).getNo() == updateNo) {
-                            todoList.remove(i);
-                            break;
+                        if (no >= 1 && no <= taskArray.length) {
+                            updateNo = taskArray[no - 1].getNo();
+                        } else {
+                            System.out.println("잘못된 번호입니다.");
+                            continue;
                         }
+
+                        for (int i = 0; i < todoList.size(); i++) {
+                            if (todoList.get(i).getNo() == updateNo) {
+                                todoList.remove(i);
+                                break;
+                            }
+                        }
+                        System.out.println("삭제 완료.");
+                        getPendingTasks();
+                        // printTask();
                     }
-                    System.out.println("삭제 완료.");
-                    getPendingTasks();
-                    // printTask();
+                    if (menuNo == 2) {
+                        removeAllTask();
+                        break;
+                    }
+                } else {
+                    System.out.println("유효한 메뉴 번호를 입력해 주세요.");
                 }
-                if (menuNo == 2) {
-                    removeAllTask();
-                    break;
-                }
+
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
