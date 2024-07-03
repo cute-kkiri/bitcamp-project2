@@ -55,8 +55,15 @@ public class TodoCommand implements MethodInterface {
                 }
                 if (menuNo == 1) {
                     int no = Prompt.inputInt("삭제할 리스트 번호 >>");
-                    Todo[] todoArray = getPendingTasks();
-                    int updateNo = todoArray[no - 1].getNo();
+                    Todo[] taskArray = getPendingTasks();
+                    int updateNo;
+
+                    if (no >= 1 && no <= taskArray.length) {
+                        updateNo = taskArray[no - 1].getNo();
+                    } else {
+                        System.out.println("잘못된 번호입니다.");
+                        continue;
+                    }
 
                     for (int i = 0; i < todoList.size(); i++) {
                         if (todoList.get(i).getNo() == updateNo) {
@@ -82,7 +89,12 @@ public class TodoCommand implements MethodInterface {
     public int removeAllTask() {
         String command = Prompt.input("전체 삭제하시겠습니까?(Y/N)");
         if (command.equalsIgnoreCase("Y")) {
-            todoList.clear();
+            for (int i = 0; i < todoList.size(); i++) {
+                Todo task = todoList.get(i);
+                if (!task.isCompleted()) {
+                    todoList.remove(task);
+                }
+            }
             System.out.println("전체 삭제 완료.");
             return 1;
         } else {
@@ -109,7 +121,13 @@ public class TodoCommand implements MethodInterface {
                         Todo[] taskArray = getPendingTasks();
                         int updateNo;
                         Todo task = new Todo();
-                        updateNo = taskArray[no - 1].getNo();
+
+                        if (no >= 1 && no <= taskArray.length) {
+                            updateNo = taskArray[no - 1].getNo();
+                        } else {
+                            System.out.println("잘못된 번호입니다.");
+                            continue;
+                        }
 
                         for (int i = 0; i < todoList.size(); i++) {
                             if (todoList.get(i).getNo() == updateNo) {
@@ -168,12 +186,18 @@ public class TodoCommand implements MethodInterface {
                     continue;
                 }
                 int checkNo = taskArray[no - 1].getNo();
-
+                String command = null;
                 for (int i = 0; i < taskArray.length; i++) {
                     if (checkNo == taskArray[i].getNo()) {
                         task = taskArray[i];
                         if (!task.isCompleted()) {
-                            task.check();
+                            command = Prompt.input("(%s)완료 체크하시겠습니까?(Y/N)", task.getTodo());
+                            if (command.equalsIgnoreCase("Y")) {
+                                task.check();
+                            } else {
+                                System.out.println("체크 취소.");
+                                break;
+                            }
                         } else {
                             System.out.println("이미 완료된 리스트입니다.");
                             continue;
@@ -234,9 +258,13 @@ public class TodoCommand implements MethodInterface {
     public void loadDummyData() {
         todoList.add(new Todo("정처기 공부하기", "Dummy Task 1", "테스트를 위한 더미 데이터1", 3, true));
         todoList.add(new Todo("SQLD 공부하기", "Dummy Task 2", "테스트를 위한 더미 데이터2", 2, false));
-        todoList.add(new Todo("SPRING 강의보기", "Dummy Task 3", "테스트를 위한 더미 데이터3", 1, true));
-        todoList.add(new Todo("JAVA 공부하기", "Dummy Task 3", "테스트를 위한 더미 데이터4", 4, false));
-        todoList.add(new Todo("HTML 복습하기", "Dummy Task 3", "테스트를 위한 더미 데이터5", 1, true));
-        todoList.add(new Todo("CSS 연습하기", "Dummy Task 3", "테스트를 위한 더미 데이터6", 2, false));
+        todoList.add(new Todo("SPRING 강의보기", "Dummy Task 3", "테스트를 위한 더미 데이터3", 2, true));
+        todoList.add(new Todo("JAVA 공부하기", "Dummy Task 3", "테스트를 위한 더미 데이터4", 2, false));
+        todoList.add(new Todo("HTML 복습하기", "Dummy Task 3", "테스트를 위한 더미 데이터5", 4, true));
+        todoList.add(new Todo("CSS 연습하기", "Dummy Task 3", "테스트를 위한 더미 데이터6", 4, false));
+        todoList.add(new Todo("전생슬 보기", "Dummy Task 2", "테스트를 위한 더미 데이터7", 1, false));
+        todoList.add(new Todo("귀멸의 칼날 보기", "Dummy Task 2", "테스트를 위한 더미 데이터8", 1, false));
+        todoList.add(new Todo("주술회전 보기", "Dummy Task 2", "테스트를 위한 더미 데이터9", 1, false));
+        todoList.add(new Todo("무직전생 보기", "Dummy Task 2", "테스트를 위한 더미 데이터10", 1, false));
     }
 }
