@@ -1,5 +1,6 @@
 package bitcamp.project2.command;
 
+import bitcamp.project2.util.Menus;
 import bitcamp.project2.util.MethodInterface;
 import bitcamp.project2.util.Prompt;
 import bitcamp.project2.vo.Todo;
@@ -41,58 +42,78 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public int removeTask() {
-        System.out.println("1. 선택 삭제");
-        System.out.println("2. 전체 삭제");
-        System.out.println("9. 이전");
-
-        while (true) {
+        while(true) {
             try {
+                printSubMenu(new String[]{"선택 삭제", "전체 삭제"});
                 int menuNo = Prompt.inputInt("편집/삭제 >>");
+                Todo[] taskArray = getPendingTasks();
+
+                if (taskArray == null) {
+                    System.out.println("등록된 리스트가 없습니다.");
+                    break;
+                }
+
                 if (menuNo == 9 || menuNo == 1 || menuNo == 2) {
-                    if (menuNo == 9) {
-                        break;
+                    if(menuNo == 9) {
+                        editTask();
                     }
-                    if (menuNo == 1) {
-                        int no = Prompt.inputInt("삭제할 리스트 번호 >>");
-                        Todo[] taskArray = getPendingTasks();
+
+                    if(menuNo == 2) {
+                        removeAllTask();
+                        return 1;
+                    }
+
+                    try {
+                        printPendingTasks();
+                        int no = Prompt.inputInt("삭제할 리스트 번호 (이전: 0)>>");
                         int updateNo;
+
+                        if(no == 0) {
+                            continue;
+                        }
 
                         if (no >= 1 && no <= taskArray.length) {
                             updateNo = taskArray[no - 1].getNo();
+                            for (int i = 0; i < todoList.size(); i++) {
+                                if (todoList.get(i).getNo() == updateNo) {
+                                    todoList.remove(i);
+                                    break;
+                                }
+                            }
+                            printPendingTasks();
+                            System.out.println("삭제 완료.");
+                            continue;
                         } else {
                             System.out.println("잘못된 번호입니다.");
                             continue;
                         }
 
-                        for (int i = 0; i < todoList.size(); i++) {
-                            if (todoList.get(i).getNo() == updateNo) {
-                                todoList.remove(i);
-                                break;
-                            }
-                        }
-                        System.out.println("삭제 완료.");
-                        getPendingTasks();
-                        // printTask();
+                    } catch (NumberFormatException ex) {
+                        System.out.println("숫자로 메뉴 번호를 입력하세요.");
                     }
-                    if (menuNo == 2) {
-                        removeAllTask();
-                        break;
-                    }
-                } else {
-                    System.out.println("유효한 메뉴 번호를 입력해 주세요.");
-                }
 
+                } else {
+                    System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                }
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
         }
+
         return 1;
     }
 
     @Override
     public int removeAllTask() {
-        String command = Prompt.input("전체 삭제하시겠습니까?(Y/N)");
+        Todo[] taskArray = getPendingTasks();
+        if(taskArray == null) {
+            System.out.println("등록된 리스트가 없습니다.");
+            return 0;
+        }
+
+        String command = Prompt.input("전체 삭제하시겠습니까?(Y/default: N)");
         int size = todoList.size();
+
         if (command.equalsIgnoreCase("Y")) {
             for (int i = 0; i < size; i++) {
                 todoList.removeIf(todo -> !todo.isCompleted());
@@ -118,8 +139,13 @@ public class TodoCommand implements MethodInterface {
 
             printPendingTasks();
             try {
-                int no = Prompt.inputInt("수정할 리스트 번호 >>");
+                int no = Prompt.inputInt("수정할 리스트 번호 (이전: 0)>>");
                 int updateNo;
+
+                if(no == 0) {
+                    editTask();
+                    break;
+                }
 
                 if (no >= 1 && no <= taskArray.length) {
                     updateNo = taskArray[no - 1].getNo();
@@ -169,8 +195,8 @@ public class TodoCommand implements MethodInterface {
         while (true) {
             try {
                 System.out.println();
-                System.out.println("0번을 누르면 이전으로 돌아갑니다.");
-                int no = Prompt.inputInt("체크할 리스트 번호 >>");
+                printPendingTasks();
+                int no = Prompt.inputInt("체크할 리스트 번호 (이전: 0)>>");
                 Todo[] taskArray = getPendingTasks();
                 Todo task;
                 if (no == 0) {
@@ -198,6 +224,7 @@ public class TodoCommand implements MethodInterface {
                             System.out.println("이미 완료된 리스트입니다.");
                             continue;
                         }
+                        printCompletedTasks();
                         System.out.println("체크 완료.");
                         break;
                     }
@@ -251,6 +278,40 @@ public class TodoCommand implements MethodInterface {
             .filter(todo -> !todo.isCompleted())
             .sorted(Comparator.comparingInt(Todo::getPriorityIndex))
             .collect(Collectors.toList());
+    }
+
+    public void editTask() {
+        try {
+            printSubMenu(new String[]{"수정", "삭제"});
+            int menuNo = Prompt.inputInt("편집 >>");
+
+            if (menuNo == 1 || menuNo == 2 || menuNo == 9) {
+                if(menuNo == 9) {
+                    Menus.execute();
+                    return;
+                }
+
+                if (menuNo == 1) {
+                    updateTask();
+                }
+
+                if (menuNo == 2) {
+                    removeTask();
+                }
+            } else {
+                System.out.println("유효한 메뉴 번호를 입력해주세요.");
+            }
+        } catch (NumberFormatException ex) {
+            System.out.println("숫자로 메뉴 번호를 입력해주세요.");
+        }
+    }
+
+    void printSubMenu(String[] list) {
+        System.out.println();
+        for (int i = 0; i < list.length; i++) {
+            System.out.printf("%d. %s\n", (i + 1), list[i]);
+        }
+        System.out.println("9. 이전");
     }
 
     public void loadDummyData() {
