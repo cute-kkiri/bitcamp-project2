@@ -87,13 +87,10 @@ public class TodoCommand implements MethodInterface {
     @Override
     public int removeAllTask() {
         String command = Prompt.input("전체 삭제하시겠습니까?(Y/N)");
+        int size = todoList.size();
         if (command.equalsIgnoreCase("Y")) {
-            for (int i = 0; i < todoList.size(); i++) {
-                Todo task = todoList.get(i);
-                System.out.println(todoList.get(i));
-                if (!task.isCompleted()) {
-                    todoList.remove(task);
-                }
+            for (int i = 0; i < size; i++) {
+                todoList.removeIf(todo -> !todo.isCompleted());
             }
             System.out.println("전체 삭제 완료.");
             return 1;
@@ -109,7 +106,7 @@ public class TodoCommand implements MethodInterface {
         while (true) {
             Todo[] taskArray = Tasks.getPendingTasks();
 
-            if(taskArray == null) {
+            if (taskArray == null) {
                 System.out.println("등록된 리스트가 없습니다.");
                 break;
             }
@@ -137,13 +134,13 @@ public class TodoCommand implements MethodInterface {
                 while (true) {
                     try {
                         int priorityIndex = Prompt.inputInt("%s (%d) >>", "우선 순위 수정",
-                                task.getPriorityIndex());
+                            task.getPriorityIndex());
                         task.inputPriorityIndex(priorityIndex);
 
                         task.inputTodo(
-                                Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
+                            Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
                         task.inputCategory(
-                                Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
+                            Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
                         task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
 
                         System.out.println("수정 완료.");
@@ -155,7 +152,7 @@ public class TodoCommand implements MethodInterface {
                 }
 
                 break;
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("숫자로 리스트 번호를 입력하세요.");
             }
         }
@@ -210,7 +207,6 @@ public class TodoCommand implements MethodInterface {
     public void viewTask() {
         printPendingTasks();
         printCompletedTasks();
-
 
 //        for (int i = 0; i < todoList.size(); i++) {
 //            System.out.println(task = todoList.get(i));
