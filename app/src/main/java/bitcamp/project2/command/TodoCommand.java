@@ -37,7 +37,6 @@ public class TodoCommand implements MethodInterface {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
         }
-
         return 1;
     }
 
