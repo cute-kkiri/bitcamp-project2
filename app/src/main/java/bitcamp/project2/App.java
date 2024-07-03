@@ -6,14 +6,18 @@ package bitcamp.project2;
 
 import bitcamp.project2.command.TodoCommand;
 import bitcamp.project2.util.Prompt;
+import bitcamp.project2.util.Tasks;
 import bitcamp.project2.vo.Todo;
 import java.util.List;
+
+import static bitcamp.project2.util.Tasks.*;
 
 public class App {
 
     static String[] menus = new String[]{"리스트 추가", "리스트 조회", "리스트 편집", "체크 하기"};
+    String[] editMenus = {"수정", "삭제"};
 
-    static TodoCommand todoCommand = new TodoCommand();
+//    static TodoCommand todoCommand = new TodoCommand();
 
     public static void main(String[] args) {
         todoCommand.loadDummyData();
@@ -29,16 +33,17 @@ public class App {
             try {
                 command = Prompt.input(">> ");
                 int menuNo = Integer.parseInt(command);
-                String menuTitle = getMenuTitle(menuNo, menus);
-                if (menuTitle == null) {
-                    System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                if (menuNo == 0) {
+                    System.out.println("종료.");
+                    break;
                 } else {
-                    if (menuTitle.equals("종료")) {
-                        System.out.println("종료");
-                        break;
-                    } else {
-                        processMenu(menuTitle);
+                    String menuTitle = getMenuTitle(menuNo, menus);
+                    if(menuTitle == null) {
+                        System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                        continue;
                     }
+
+                    processMenu(menuTitle);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("숫자로 메뉴 번호를 입력해주세요.");
@@ -50,6 +55,7 @@ public class App {
         switch (menuTitle) {
             case "리스트 추가":
                 todoCommand.addTask();
+                printPendingTasks();
                 printMenu();
                 break;
             case "리스트 조회":
@@ -57,7 +63,8 @@ public class App {
                 printMenu();
                 break;
             case "리스트 편집":
-                todoCommand.updateTask();
+                editTask();
+                // todoCommand.updateTask();
                 printMenu();
                 break;
             case "체크 하기":
@@ -68,6 +75,42 @@ public class App {
                 System.out.printf("%s 메뉴의 명령을 처리할 수 없습니다.\n", menuTitle);
         }
 
+    }
+
+    void editTask() {
+        printSubMenu();
+        while (true) {
+            try {
+                int menuNo = Prompt.inputInt("편집 >>");
+
+                if (menuNo == 9) {
+                    break;
+                } else {
+                    String editMenuTitle = getMenuTitle(menuNo, editMenus);
+
+                    if(editMenuTitle == null) {
+                        System.out.println("유효한 메뉴 번호를 입력해주세요.");
+                        continue;
+                    }
+
+                    switch (editMenuTitle) {
+                        case "수정": todoCommand.updateTask(); break;
+                        case "삭제": todoCommand.removeTask(); break;
+                    }
+                    break;
+                }
+
+            } catch (NumberFormatException ex) {
+                System.out.println("숫자로 메뉴 번호를 입력해주세요.");
+            }
+        }
+    }
+
+    void printSubMenu() {
+        for(int i = 0; i < editMenus.length; i++) {
+            System.out.printf("%d. %s\n", (i + 1), editMenus[i]);
+        }
+        System.out.println("9. 이전");
     }
 
     void printMenu() {
@@ -83,102 +126,6 @@ public class App {
     }
 
     String getMenuTitle(int menuNo, String[] menus) {
-        if (menuNo == 0) {
-            return "종료";
-        }
         return isValidateMenu(menuNo, menus) ? menus[menuNo - 1] : null;
-    }
-
-    public static void printPendingTasks() {
-        String title = "No. 우선순위 할 일";
-        List<Todo> pendingTasks = todoCommand.viewPendingTasks();
-        Todo[] task = null;
-
-        if (pendingTasks.size() == 0) {
-            System.out.println();
-            System.out.println("-------------------------");
-            System.out.println("등록된 리스트가 없습니다.");
-            System.out.println("-------------------------");
-        }
-
-        System.out.println();
-        if (pendingTasks.size() != 0) {
-            System.out.printf("미완료 목록 (%d)\n%s\n", pendingTasks.size(), title);
-            for (int i = 0; i < pendingTasks.size(); i++) {
-                task = pendingTasks.toArray(new Todo[i]);
-                System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task[i].getPriorityIndex(),
-                    task[i].getTodo());
-            }
-        }
-    }
-
-    public static Todo[] getPendingTasks() {
-        List<Todo> pendingTasks = todoCommand.viewPendingTasks();
-        Todo[] task = null;
-
-        if (!pendingTasks.isEmpty()) {
-            for (int i = 0; i < pendingTasks.size(); i++) {
-                task = pendingTasks.toArray(new Todo[i]);
-            }
-        }
-        return task;
-    }
-
-    public static Todo[] getCompletedTasks() {
-        List<Todo> completedTasks = todoCommand.viewCompletedTasks();
-        Todo[] task = null;
-
-        if (!completedTasks.isEmpty()) {
-            for (int i = 0; i < completedTasks.size(); i++) {
-                task = completedTasks.toArray(new Todo[i]);
-            }
-        }
-        return task;
-    }
-
-    public static void printCompletedTasks() {
-        String title = "No. 우선순위 할 일";
-
-        List<Todo> completedTasks = todoCommand.viewCompletedTasks();
-
-        if (completedTasks.size() == 0) {
-            System.out.println();
-            System.out.println("-------------------------");
-            System.out.println("등록된 리스트가 없습니다.");
-            System.out.println("-------------------------");
-        }
-
-        System.out.println();
-        if (completedTasks.size() != 0) {
-            System.out.printf("완료 목록 (%d)\n%s\n", completedTasks.size(), title);
-            for (int i = 0; i < completedTasks.size(); i++) {
-                Todo task = completedTasks.get(i);
-                System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task.getPriorityIndex(),
-                    task.getTodo());
-            }
-        }
-    }
-
-    public static void printAllTasks() {
-        String title = "No. 우선순위 할 일";
-
-        List<Todo> tasks = todoCommand.viewTasks();
-
-        if (tasks.size() == 0) {
-            System.out.println();
-            System.out.println("-------------------------");
-            System.out.println("등록된 리스트가 없습니다.");
-            System.out.println("-------------------------");
-        }
-
-        System.out.println();
-        if (tasks.size() != 0) {
-            System.out.printf("전체 목록 (%d)\n%s\n", tasks.size(), title);
-            for (int i = 0; i < tasks.size(); i++) {
-                Todo task = tasks.get(i);
-                System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task.getPriorityIndex(),
-                    task.getTodo());
-            }
-        }
     }
 }
