@@ -50,7 +50,6 @@ public class Menus {
                     todoCommand.editTask();
                     break;
                 }
-                // todoCommand.updateTask();
                 printMenu();
                 break;
             case "기록 하기":

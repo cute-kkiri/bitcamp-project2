@@ -9,43 +9,31 @@ public class Todo {
 
     private int no;                                     // 인덱스
     private String todo;                                // 할 일
-    private String category;                            // 카테고리
     private boolean isCompleted = false;                // 완료 유무 (기본값 false)
     private String memo;                                // 메모
     private int priorityIndex = 0;                      // 우선 순위 인덱스 (기본값 false)
-
-    public Todo(String todo, String category, String memo, int priorityIndex) {
-        this.no = nextSeqNo();
-        this.todo = todo;
-        this.category = category;
-        this.memo = memo;
-        this.priorityIndex = priorityIndex;
-    }
 
 
     @Override
     public String toString() {
         return " \t \t " + priorityIndex + " \t \t " + todo + " \t \t ";
     }
-
-    public String toAllString() {
-        return " \t \t " + priorityIndex + " \t \t " + todo + " \t \t " + " \t \t " + memo;
-    }
-
+    
     public Todo() {
     }
 
-    public Todo(String todo, String category, String memo) {
+
+    public Todo(String todo, String memo, int priorityIndex) {
         this.no = nextSeqNo();
         this.todo = todo;
-        this.category = category;
         this.memo = memo;
+        this.priorityIndex = priorityIndex;
     }
 
-    public Todo(String todo, String category, String memo, int priorityIndex, boolean isCompleted) {
+
+    public Todo(String todo, String memo, int priorityIndex, boolean isCompleted) {
         this.no = nextSeqNo();
         this.todo = todo;
-        this.category = category;
         this.memo = memo;
         this.priorityIndex = priorityIndex;
         this.isCompleted = isCompleted;
@@ -82,14 +70,6 @@ public class Todo {
 
     public void inputTodo(String todo) {
         this.todo = todo;
-    }
-
-    public void inputCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCategory() {
-        return category;
     }
 
     public boolean isCompleted() {

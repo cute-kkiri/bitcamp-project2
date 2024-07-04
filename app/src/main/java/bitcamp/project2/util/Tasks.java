@@ -7,12 +7,17 @@ import java.util.List;
 
 public class Tasks {
 
+    static String priorityIndex1 = "😍";
+    static String priorityIndex2 = "🥰";
+    static String priorityIndex3 = "😀";
+    static String priorityIndex4 = "🙂";
+
     public static TodoCommand todoCommand = new TodoCommand();
 
     public static void printPendingTasks() {
         String title = "No. 애정도 제목";
         List<Todo> pendingTasks = todoCommand.viewPendingTasks();
-        Todo[] task = null;
+        Todo[] task;
 
         if (pendingTasks.size() == 0) {
             System.out.println();
@@ -98,8 +103,7 @@ public class Tasks {
                 "No.", "애정도", "제목[메모]");
             for (int i = 0; i < pendingTasks.size(); i++) {
                 Todo todo = pendingTasks.get(i);
-                System.out.println((i + 1) + " \t \t" + todo.getPriorityIndex() + " \t \t " +
-                    todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]" + Ansi.reset);
+                printPendingTasks(todo, i);
             }
         }
 
@@ -113,33 +117,72 @@ public class Tasks {
         System.out.println();
         if (completedTasks.size() != 0) {
             System.out.printf("\033[1m%s %s \t %s\033[0m\n",
-                "No.", "애정도", "제목[메모]");
+                "No.", "애정도", "제목[후기]");
             for (int i = 0; i < completedTasks.size(); i++) {
                 Todo todo = completedTasks.get(i);
-                System.out.println(
-                    (i + 1) + " \t \t" + todo.getPriorityIndex()
-                        + " \t \t " +
-                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]" + Ansi.reset);
+                printCompletedTasks(todo, i);
             }
         }
 
-        /*if (tasks.size() == 0) {
-            System.out.println();
-            System.out.println("-------------------------");
-            System.out.println("등록된 리스트가 없습니다.");
-            System.out.println("-------------------------");
-        }
 
-        System.out.println();
-        if (tasks.size() != 0) {
-            System.out.printf("전체 목록 (%d)\n%s\n", tasks.size(), title);
-            for (int i = 0; i < tasks.size(); i++) {
-                Todo task = tasks.get(i);
-                System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task.getPriorityIndex(),
-                        task.getTodo());
-            }
-        }*/
     }
 
 
+    public static void printPendingTasks(Todo todo, int i) {
+
+        switch (todo.getPriorityIndex()) {
+            case 1:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex1 + " \t \t" +
+                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+                break;
+            case 2:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex2 + " \t \t" +
+                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+                break;
+            case 3:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex3 + " \t \t" +
+                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+                break;
+            default:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex4 + " \t \t" +
+                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+        }
+    }
+
+    public static void printCompletedTasks(Todo todo, int i) {
+
+        switch (todo.getPriorityIndex()) {
+            case 1:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex1 + " \t \t" +
+                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+                break;
+            case 2:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex2 + " \t \t" +
+                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+                break;
+            case 3:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex3 + " \t \t" +
+                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+                break;
+            default:
+                System.out.println(
+                    (i + 1) + " \t \t" + priorityIndex4 + " \t \t" +
+                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
+                        + Ansi.reset);
+        }
+    }
 }

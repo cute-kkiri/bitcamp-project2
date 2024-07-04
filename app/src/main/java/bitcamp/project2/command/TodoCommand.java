@@ -23,14 +23,17 @@ public class TodoCommand implements MethodInterface {
     @Override
     public int addTask() {
         String todo = Prompt.input("할일 작성 >>");
-        String category = Prompt.input("카테고리 작성 >>");
         String memo = Prompt.input("메모 작성 >>");
         while (true) {
             try {
-                int priorityIndex = Prompt.inputInt("우선순위 설정 >>");
-
-                Todo todoItem = new Todo(todo, category, memo, priorityIndex);
-                todoList.add(todoItem);
+                int priorityIndex = Prompt.inputInt("애정도 설정 (1~4)>>");
+                if (priorityIndex >= 1 && priorityIndex <= 4) {
+                    Todo todoItem = new Todo(todo, memo, priorityIndex);
+                    todoList.add(todoItem);
+                } else {
+                    System.out.println("유효한 애정 값이 아닙니다.");
+                    continue;
+                }
                 System.out.println("추가 완료.");
                 break;
             } catch (NumberFormatException ex) {
@@ -82,10 +85,8 @@ public class TodoCommand implements MethodInterface {
                             }
                             printPendingTasks();
                             System.out.println("삭제 완료.");
-                            continue;
                         } else {
                             System.out.println("잘못된 번호입니다.");
-                            continue;
                         }
 
                     } catch (NumberFormatException ex) {
@@ -170,8 +171,6 @@ public class TodoCommand implements MethodInterface {
 
                         task.inputTodo(
                             Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
-                        task.inputCategory(
-                            Prompt.input("%s (%s) >>", "카테고리 수정", task.getCategory()));
                         task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
 
                         System.out.println("수정 완료.");
@@ -196,41 +195,48 @@ public class TodoCommand implements MethodInterface {
             try {
                 System.out.println();
                 printPendingTasks();
-                int no = Prompt.inputInt("체크할 리스트 번호 (이전: 0)>>");
+                int no = Prompt.inputInt("\n기록할 애니목록 번호 (이전: 0)>>");
                 Todo[] taskArray = getPendingTasks();
                 Todo task;
                 if (no == 0) {
                     break;
                 }
                 if (no < 0 || no > taskArray.length) {
-                    System.out.println("유효한 리스트 번호가 아닙니다.");
+                    System.out.println("유효한 목록 번호가 아닙니다.");
                     continue;
                 }
                 int checkNo = taskArray[no - 1].getNo();
 
-                String command = null;
+                String command;
+                String updateMemo;
                 for (int i = 0; i < taskArray.length; i++) {
                     if (checkNo == taskArray[i].getNo()) {
                         task = taskArray[i];
                         if (!task.isCompleted()) {
-                            command = Prompt.input("(%s)완료 체크하시겠습니까?(Y/N)", task.getTodo());
+                            updateMemo = Prompt.input("(%s)시청 후기를 작성해 주세요 (이전: 0)>>",
+                                task.getTodo());
+                            if (updateMemo.equals("0")) {
+                                break;
+                            }
+                            command = Prompt.input("(%s)내 시청기록에 추가하시겠습니까?(Y/N)", task.getTodo());
                             if (command.equalsIgnoreCase("Y")) {
                                 task.check();
+                                task.inputMemo(updateMemo);
                             } else {
-                                System.out.println("체크 취소.");
+                                System.out.println("추가 취소.");
                                 break;
                             }
                         } else {
-                            System.out.println("이미 완료된 리스트입니다.");
+                            System.out.println("이미 기록된 애니 목록입니다.");
                             continue;
                         }
                         printCompletedTasks();
-                        System.out.println("체크 완료.");
+                        System.out.println("추가 완료.");
                         break;
                     }
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("체크할 항목을 숫자로 입력하세요.");
+                System.out.println("기록할 애니를 숫자로 입력하세요.");
             }
         }
     }
@@ -238,30 +244,6 @@ public class TodoCommand implements MethodInterface {
     @Override
     public void viewTask() {
         printAllTasks();
-
-        /*for (int i = 0; i < todoList.size(); i++) {
-            System.out.println(
-                    "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
-            System.out.println(todoList.get(i).toAllString());
-        }*/
-
-//        for (int i = 0; i < todoList.size(); i++) {
-//            System.out.println(task = todoList.get(i));
-//        }
-
-       /* Todo task = new Todo();
-        int no = Prompt.inputInt("조회할 리스트 번호 >>");
-        for (int i = 0; i < todoList.size(); i++) {
-            if ((no - 1) == todoList.get(i).getNo()) {
-                task = todoList.get(i);
-                break;
-            }
-        }
-        if (task != null) {
-            System.out.println(
-                "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
-            System.out.println(task.toAllString());
-        }*/
     }
 
     @Override
@@ -320,16 +302,16 @@ public class TodoCommand implements MethodInterface {
     }
 
     public void loadDummyData() {
-        todoList.add(new Todo("오버로드", "이세계", "띵작", 3, true));
-        todoList.add(new Todo("강철의 연금술사", "판타지", "4화 보는 중", 2, false));
-        todoList.add(new Todo("암살교실", "액션", "짱 재밌네~", 2, true));
-        todoList.add(new Todo("최애의 아이", "미스터리", "2화 보는 중", 2, false));
-        todoList.add(new Todo("마슐", "판타지", "짱짱 재밌음", 4, true));
-        todoList.add(new Todo("진격의 거인", "판타지", "시청 전", 4, false));
-        todoList.add(new Todo("전생슬", "이세계", "마지막 화", 1, false));
-        todoList.add(new Todo("귀멸의 칼날", "판타지", "시즌 3 존버 중", 1, false));
-        todoList.add(new Todo("주술회전", "판타지", "16화", 1, false));
-        todoList.add(new Todo("무직전생", "이세계", "2화 14분 30초", 1, false));
+        todoList.add(new Todo("오버로드", "띵작", 3, true));
+        todoList.add(new Todo("강철의 연금술사", "4화 보는 중", 2, false));
+        todoList.add(new Todo("암살교실", "짱 재밌네~", 2, true));
+        todoList.add(new Todo("최애의 아이", "2화 보는 중", 2, false));
+        todoList.add(new Todo("마슐", "짱짱 재밌음", 4, true));
+        todoList.add(new Todo("진격의 거인", "시청 전", 4, false));
+        todoList.add(new Todo("전생슬", "마지막 화", 1, false));
+        todoList.add(new Todo("귀멸의 칼날", "시즌3 존버 중", 4, false));
+        todoList.add(new Todo("주술회전", "16화", 3, false));
+        todoList.add(new Todo("무직전생", "2화 14분 30초", 2, false));
     }
 
 }

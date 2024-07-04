@@ -14,7 +14,6 @@ import java.util.List;
 import static bitcamp.project2.util.Tasks.*;
 
 public class App {
-//    static TodoCommand todoCommand = new TodoCommand();
 
     public static void main(String[] args) {
         todoCommand.loadDummyData();
