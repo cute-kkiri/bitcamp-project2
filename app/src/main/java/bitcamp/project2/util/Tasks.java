@@ -23,13 +23,9 @@ public class Tasks {
         return Ansi.bold + "No. 애정도 \t 제목" + Ansi.reset;
     }
 
-    private static String printTodoDetailList(String memoAnsi, Todo todo) {
-        return "\t  " + todo.getPriorityIndex() + " \t " + todo.getTodo() + memoAnsi + " [" + todo.getMemo() + "]" + Ansi.reset;
-
-    }
-
     private static String printTodoList(Todo todo) {
-        return "\t  " + todo.getPriorityIndex() + " \t "+ todo.getTodo();
+        String emoji = getEmoji(todo.getPriorityIndex());
+        return "\t \t \t" + emoji + " \t " + todo.getTodo();
     }
 
     public static void listEmpty(int size) {
@@ -116,8 +112,7 @@ public class Tasks {
             System.out.printf("%s\n", listHead(true));
             for (int i = 0; i < pendingTasks.size(); i++) {
                 Todo todo = pendingTasks.get(i);
-                System.out.println((i + 1) + printTodoDetailList(Ansi.green, todo));
-                printPendingTasks(todo, i);
+                printTasks(todo, i, Ansi.green);
             }
         }
         System.out.println(line);
@@ -132,66 +127,39 @@ public class Tasks {
             System.out.printf("%s\n", listHead(true));
             for (int i = 0; i < completedTasks.size(); i++) {
                 Todo todo = completedTasks.get(i);
-                System.out.println((i + 1) + printTodoDetailList(Ansi.gray, todo));
+                printTasks(todo, i, Ansi.ligthGray);
             }
         }
     }
-    public static void printPendingTasks(Todo todo, int i) {
 
-        switch (todo.getPriorityIndex()) {
+    public static String getEmoji(int i) {
+        String emoji;
+        switch (i) {
             case 1:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex1 + " \t \t" +
-                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
+                emoji = priorityIndex1;
                 break;
             case 2:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex2 + " \t \t" +
-                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
+                emoji = priorityIndex2;
                 break;
             case 3:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex3 + " \t \t" +
-                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
+                emoji = priorityIndex3;
                 break;
             default:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex4 + " \t \t" +
-                        todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
+                emoji = priorityIndex4;
+                break;
         }
+        return emoji;
+
     }
 
-    public static void printCompletedTasks(Todo todo, int i) {
-
-        switch (todo.getPriorityIndex()) {
-            case 1:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex1 + " \t \t" +
-                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
-                break;
-            case 2:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex2 + " \t \t" +
-                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
-                break;
-            case 3:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex3 + " \t \t" +
-                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
-                break;
-            default:
-                System.out.println(
-                    (i + 1) + " \t \t" + priorityIndex4 + " \t \t" +
-                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]"
-                        + Ansi.reset);
-        }
+    public static void printTasks(Todo todo, int i, String ansi) {
+        String emoji = getEmoji(todo.getPriorityIndex());
+        System.out.println(
+            (i + 1) + " \t \t" + emoji + "\t \t " +
+                todo.getTodo() + ansi + " [" + todo.getMemo() + "]"
+                + Ansi.reset);
     }
-
 }
+
+
+

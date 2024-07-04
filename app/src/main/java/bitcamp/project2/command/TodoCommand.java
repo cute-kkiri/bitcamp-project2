@@ -50,13 +50,15 @@ public class TodoCommand implements MethodInterface {
                 printSubMenu(new String[]{"선택 삭제", "전체 삭제"});
                 int menuNo = Prompt.inputInt("편집/삭제 >>");
                 Todo[] taskArray = getPendingTasks();
-
+                if (menuNo == 9) {
+                    break;
+                }
                 if (taskArray == null) {
                     System.out.println("등록된 애니가 없습니다.");
                     break;
                 }
 
-                switch(menuNo) {
+                switch (menuNo) {
                     case 1:
                         try {
                             printPendingTasks();
@@ -68,29 +70,30 @@ public class TodoCommand implements MethodInterface {
                                 continue;
                             }
 
-                        if (no >= 1 && no <= taskArray.length) {
-                            updateNo = taskArray[no - 1].getNo();
-                            for (int i = 0; i < todoList.size(); i++) {
-                                if (todoList.get(i).getNo() == updateNo) {
-                                    todoList.remove(i);
-                                    break;
+                            if (no >= 1 && no <= taskArray.length) {
+                                updateNo = taskArray[no - 1].getNo();
+                                for (int i = 0; i < todoList.size(); i++) {
+                                    if (todoList.get(i).getNo() == updateNo) {
+                                        todoList.remove(i);
+                                        break;
+                                    }
                                 }
+                                printPendingTasks();
+                                System.out.println("삭제 완료.");
+                            } else {
+                                System.out.println("잘못된 번호입니다.");
                             }
-                            printPendingTasks();
-                            System.out.println("삭제 완료.");
-                        } else {
-                            System.out.println("잘못된 번호입니다.");
-                        }
 
                         } catch (NumberFormatException ex) {
                             System.out.println("숫자로 메뉴 번호를 입력해주세요.");
                         }
                         break;
-                    case 2: removeAllTask();
+                    case 2:
+                        removeAllTask();
                         break;
-                    case 9: editTask();
+                    default:
+                        System.out.println("유효한 번호를 입력해주세요.");
                         break;
-                    default: System.out.println("유효한 번호를 입력해주세요.");
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
@@ -164,11 +167,14 @@ public class TodoCommand implements MethodInterface {
                     try {
                         int priorityIndex = Prompt.inputInt("%s (%d) >>", "애정도 수정",
                             task.getPriorityIndex());
-                        task.inputPriorityIndex(priorityIndex);
-
+                        if (priorityIndex >= 1 && priorityIndex <= 4) {
+                            task.inputPriorityIndex(priorityIndex);
+                        } else {
+                            System.out.println("유효한 애정 값이 아닙니다.");
+                            continue;
+                        }
                         task.inputTodo(
                             Prompt.input("%s (%s) >>", "제목 수정", task.getTodo()));
-                            Prompt.input("%s (%s) >>", "할 일 수정", task.getTodo()));
                         task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
 
                         System.out.println("수정 완료.");
@@ -178,7 +184,6 @@ public class TodoCommand implements MethodInterface {
                         System.out.println("숫자로 애정도를 입력해주세요.");
                     }
                 }
-
                 break;
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력해주세요.");
@@ -270,14 +275,18 @@ public class TodoCommand implements MethodInterface {
             printSubMenu(new String[]{"수정", "삭제"});
             int menuNo = Prompt.inputInt("편집 >>");
 
-            switch(menuNo) {
-                case 1: updateTask();
+            switch (menuNo) {
+                case 1:
+                    updateTask();
                     break;
-                case 2: removeTask();
+                case 2:
+                    removeTask();
                     break;
-                case 9: Menus.execute();
+                case 9:
+                    Menus.execute();
                     break;
-                default: System.out.println("유효한 번호를 입력해주세요.");
+                default:
+                    System.out.println("유효한 번호를 입력해주세요.");
             }
         } catch (NumberFormatException ex) {
             System.out.println("숫자로 메뉴 번호를 입력해주세요.");
