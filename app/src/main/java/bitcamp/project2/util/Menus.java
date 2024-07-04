@@ -46,10 +46,7 @@ public class Menus {
                 printMenu();
                 break;
             case "애니 목록 편집":
-                while (true) {
-                    todoCommand.editTask();
-                    break;
-                }
+                todoCommand.editTask();
                 // todoCommand.updateTask();
                 printMenu();
                 break;
