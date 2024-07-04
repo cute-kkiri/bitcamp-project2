@@ -81,9 +81,42 @@ public class Tasks {
     public static void printAllTasks() {
         String title = "No. 우선순위 할 일";
 
-        List<Todo> tasks = todoCommand.viewTasks();
+        List<Todo> pendingTasks = todoCommand.viewPendingTasks();
+        List<Todo> completedTasks = todoCommand.viewCompletedTasks();
 
-        if (tasks.size() == 0) {
+        if (pendingTasks.size() == 0) {
+            System.out.println();
+            System.out.println("-------------------------");
+            System.out.println("등록된 리스트가 없습니다.");
+            System.out.println("-------------------------");
+        }
+
+        System.out.println();
+        if (pendingTasks.size() != 0) {
+            System.out.println(
+                    "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
+            for (int i = 0; i < pendingTasks.size(); i++) {
+                System.out.println(pendingTasks.get(i).toAllString());
+            }
+        }
+
+        if (completedTasks.size() == 0) {
+            System.out.println();
+            System.out.println("-------------------------");
+            System.out.println("등록된 리스트가 없습니다.");
+            System.out.println("-------------------------");
+        }
+
+        System.out.println();
+        if (completedTasks.size() != 0) {
+            System.out.println(
+                    "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
+            for (int i = 0; i < completedTasks.size(); i++) {
+                System.out.println(completedTasks.get(i).toAllString());
+            }
+        }
+
+        /*if (tasks.size() == 0) {
             System.out.println();
             System.out.println("-------------------------");
             System.out.println("등록된 리스트가 없습니다.");
@@ -98,6 +131,6 @@ public class Tasks {
                 System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task.getPriorityIndex(),
                         task.getTodo());
             }
-        }
+        }*/
     }
 }

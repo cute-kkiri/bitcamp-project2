@@ -237,8 +237,13 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public void viewTask() {
-        printPendingTasks();
-        printCompletedTasks();
+        printAllTasks();
+
+        /*for (int i = 0; i < todoList.size(); i++) {
+            System.out.println(
+                    "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
+            System.out.println(todoList.get(i).toAllString());
+        }*/
 
 //        for (int i = 0; i < todoList.size(); i++) {
 //            System.out.println(task = todoList.get(i));
