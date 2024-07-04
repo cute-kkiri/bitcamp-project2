@@ -6,10 +6,11 @@ import bitcamp.project2.vo.Todo;
 import java.util.List;
 
 public class Tasks {
+
     public static TodoCommand todoCommand = new TodoCommand();
 
     public static void printPendingTasks() {
-        String title = "No. 우선순위 할 일";
+        String title = "No. 애정도 제목";
         List<Todo> pendingTasks = todoCommand.viewPendingTasks();
         Todo[] task = null;
 
@@ -25,8 +26,8 @@ public class Tasks {
             System.out.printf("미완료 목록 (%d)\n%s\n", pendingTasks.size(), title);
             for (int i = 0; i < pendingTasks.size(); i++) {
                 task = pendingTasks.toArray(new Todo[i]);
-                System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task[i].getPriorityIndex(),
-                        task[i].getTodo());
+                System.out.printf("%d \t  %d \t %s\n", (i + 1), task[i].getPriorityIndex(),
+                    task[i].getTodo());
             }
         }
     }
@@ -73,7 +74,7 @@ public class Tasks {
             for (int i = 0; i < completedTasks.size(); i++) {
                 Todo task = completedTasks.get(i);
                 System.out.printf("%d \t \t %d \t \t %s\n", (i + 1), task.getPriorityIndex(),
-                        task.getTodo());
+                    task.getTodo());
             }
         }
     }
@@ -93,10 +94,12 @@ public class Tasks {
 
         System.out.println();
         if (pendingTasks.size() != 0) {
-            System.out.println(
-                    "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
+            System.out.printf("\033[1m%s %s \t %s\033[0m\n",
+                "No.", "애정도", "제목[메모]");
             for (int i = 0; i < pendingTasks.size(); i++) {
-                System.out.println(pendingTasks.get(i).toAllString());
+                Todo todo = pendingTasks.get(i);
+                System.out.println((i + 1) + " \t \t" + todo.getPriorityIndex() + " \t \t " +
+                    todo.getTodo() + Ansi.green + " [" + todo.getMemo() + "]" + Ansi.reset);
             }
         }
 
@@ -109,10 +112,14 @@ public class Tasks {
 
         System.out.println();
         if (completedTasks.size() != 0) {
-            System.out.println(
-                    "No. 우선순위 할 일 \t \t \t \t \t \t \t 카테고리 \t \t \t \t 메모");
+            System.out.printf("\033[1m%s %s \t %s\033[0m\n",
+                "No.", "애정도", "제목[메모]");
             for (int i = 0; i < completedTasks.size(); i++) {
-                System.out.println(completedTasks.get(i).toAllString());
+                Todo todo = completedTasks.get(i);
+                System.out.println(
+                    (i + 1) + " \t \t" + todo.getPriorityIndex()
+                        + " \t \t " +
+                        todo.getTodo() + Ansi.ligthGray + " [" + todo.getMemo() + "]" + Ansi.reset);
             }
         }
 
@@ -133,4 +140,6 @@ public class Tasks {
             }
         }*/
     }
+
+
 }

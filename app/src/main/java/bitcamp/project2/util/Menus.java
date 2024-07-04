@@ -4,7 +4,8 @@ import static bitcamp.project2.util.Tasks.printPendingTasks;
 import static bitcamp.project2.util.Tasks.todoCommand;
 
 public class Menus {
-    static String[] menus = new String[]{"리스트 추가", "리스트 조회", "리스트 편집", "체크 하기"};
+
+    static String[] menus = new String[]{"새 애니 추가", "나의 애니", "애니 목록 편집", "기록 하기"};
 
     public static void execute() {
         printPendingTasks();
@@ -35,24 +36,24 @@ public class Menus {
 
     public static void processMenu(String menuTitle) {
         switch (menuTitle) {
-            case "리스트 추가":
+            case "새 애니 추가":
                 todoCommand.addTask();
                 printPendingTasks();
                 printMenu();
                 break;
-            case "리스트 조회":
+            case "나의 애니":
                 todoCommand.viewTask();
                 printMenu();
                 break;
-            case "리스트 편집":
-                while(true) {
+            case "애니 목록 편집":
+                while (true) {
                     todoCommand.editTask();
                     break;
                 }
                 // todoCommand.updateTask();
                 printMenu();
                 break;
-            case "체크 하기":
+            case "기록 하기":
                 todoCommand.taskCheck();
                 printMenu();
                 break;

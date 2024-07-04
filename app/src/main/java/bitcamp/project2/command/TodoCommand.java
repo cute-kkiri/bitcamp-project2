@@ -42,7 +42,7 @@ public class TodoCommand implements MethodInterface {
 
     @Override
     public int removeTask() {
-        while(true) {
+        while (true) {
             try {
                 printSubMenu(new String[]{"선택 삭제", "전체 삭제"});
                 int menuNo = Prompt.inputInt("편집/삭제 >>");
@@ -54,11 +54,11 @@ public class TodoCommand implements MethodInterface {
                 }
 
                 if (menuNo == 9 || menuNo == 1 || menuNo == 2) {
-                    if(menuNo == 9) {
+                    if (menuNo == 9) {
                         editTask();
                     }
 
-                    if(menuNo == 2) {
+                    if (menuNo == 2) {
                         removeAllTask();
                         return 1;
                     }
@@ -68,7 +68,7 @@ public class TodoCommand implements MethodInterface {
                         int no = Prompt.inputInt("삭제할 리스트 번호 (이전: 0)>>");
                         int updateNo;
 
-                        if(no == 0) {
+                        if (no == 0) {
                             continue;
                         }
 
@@ -106,7 +106,7 @@ public class TodoCommand implements MethodInterface {
     @Override
     public int removeAllTask() {
         Todo[] taskArray = getPendingTasks();
-        if(taskArray == null) {
+        if (taskArray == null) {
             System.out.println("등록된 리스트가 없습니다.");
             return 0;
         }
@@ -142,7 +142,7 @@ public class TodoCommand implements MethodInterface {
                 int no = Prompt.inputInt("수정할 리스트 번호 (이전: 0)>>");
                 int updateNo;
 
-                if(no == 0) {
+                if (no == 0) {
                     editTask();
                     break;
                 }
@@ -291,7 +291,7 @@ public class TodoCommand implements MethodInterface {
             int menuNo = Prompt.inputInt("편집 >>");
 
             if (menuNo == 1 || menuNo == 2 || menuNo == 9) {
-                if(menuNo == 9) {
+                if (menuNo == 9) {
                     Menus.execute();
                     return;
                 }
@@ -320,15 +320,16 @@ public class TodoCommand implements MethodInterface {
     }
 
     public void loadDummyData() {
-        todoList.add(new Todo("정처기 공부하기", "Dummy Task 1", "테스트를 위한 더미 데이터1", 3, true));
-        todoList.add(new Todo("SQLD 공부하기", "Dummy Task 2", "테스트를 위한 더미 데이터2", 2, false));
-        todoList.add(new Todo("SPRING 강의보기", "Dummy Task 3", "테스트를 위한 더미 데이터3", 2, true));
-        todoList.add(new Todo("JAVA 공부하기", "Dummy Task 3", "테스트를 위한 더미 데이터4", 2, false));
-        todoList.add(new Todo("HTML 복습하기", "Dummy Task 3", "테스트를 위한 더미 데이터5", 4, true));
-        todoList.add(new Todo("CSS 연습하기", "Dummy Task 3", "테스트를 위한 더미 데이터6", 4, false));
-        todoList.add(new Todo("전생슬 보기", "Dummy Task 2", "테스트를 위한 더미 데이터7", 1, false));
-        todoList.add(new Todo("귀멸의 칼날 보기", "Dummy Task 2", "테스트를 위한 더미 데이터8", 1, false));
-        todoList.add(new Todo("주술회전 보기", "Dummy Task 2", "테스트를 위한 더미 데이터9", 1, false));
-        todoList.add(new Todo("무직전생 보기", "Dummy Task 2", "테스트를 위한 더미 데이터10", 1, false));
+        todoList.add(new Todo("오버로드", "이세계", "띵작", 3, true));
+        todoList.add(new Todo("강철의 연금술사", "판타지", "4화 보는 중", 2, false));
+        todoList.add(new Todo("암살교실", "액션", "짱 재밌네~", 2, true));
+        todoList.add(new Todo("최애의 아이", "미스터리", "2화 보는 중", 2, false));
+        todoList.add(new Todo("마슐", "판타지", "짱짱 재밌음", 4, true));
+        todoList.add(new Todo("진격의 거인", "판타지", "시청 전", 4, false));
+        todoList.add(new Todo("전생슬", "이세계", "마지막 화", 1, false));
+        todoList.add(new Todo("귀멸의 칼날", "판타지", "시즌 3 존버 중", 1, false));
+        todoList.add(new Todo("주술회전", "판타지", "16화", 1, false));
+        todoList.add(new Todo("무직전생", "이세계", "2화 14분 30초", 1, false));
     }
+
 }

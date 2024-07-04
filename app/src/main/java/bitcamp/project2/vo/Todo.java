@@ -25,13 +25,11 @@ public class Todo {
 
     @Override
     public String toString() {
-        return (no + 1) + " \t \t " + priorityIndex + " \t \t " + todo + " \t \t ";
+        return " \t \t " + priorityIndex + " \t \t " + todo + " \t \t ";
     }
 
     public String toAllString() {
-        return (no + 1) + " \t \t " + priorityIndex + " \t \t " + todo + " \t \t " + category
-            + " \t \t " +
-            memo;
+        return " \t \t " + priorityIndex + " \t \t " + todo + " \t \t " + " \t \t " + memo;
     }
 
     public Todo() {
