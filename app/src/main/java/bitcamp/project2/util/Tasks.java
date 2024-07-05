@@ -28,31 +28,31 @@ public class Tasks {
         return "\t " + emoji + " \t " + todo.getTodo();
     }
 
-    public static void listEmpty(int size) {
-        if (size == 0) {
-            System.out.println();
-            System.out.println(line);
-            System.out.println("등록된 리스트가 없습니다.");
-            System.out.println(line);
-        }
+    public static void listEmpty() {
+        System.out.println("등록된 리스트가 없습니다.");
+    }
+
+    public static void printListTitle(String format, Object... args) {
+        System.out.println();
+        System.out.println(line);
+        System.out.printf(format + " ", args);
+        System.out.println(line);
     }
 
     public static void printPendingTasks() {
         List<Todo> pendingTasks = todoCommand.viewPendingTasks();
         Todo[] task;
 
-        listEmpty(pendingTasks.size());
+        printListTitle("시청 할 애니 목록 (%d)\n", pendingTasks.size());
 
         if (pendingTasks.size() != 0) {
-            System.out.println();
-            System.out.println(line);
-            System.out.printf("시청 할 애니 목록 (%d)\n", pendingTasks.size());
-            System.out.println(line);
             System.out.printf("%s\n", listHead(false));
             for (int i = 0; i < pendingTasks.size(); i++) {
                 task = pendingTasks.toArray(new Todo[i]);
                 System.out.println((i + 1) + printTodoList(task[i]));
             }
+        } else {
+            listEmpty();
         }
     }
 
@@ -83,18 +83,16 @@ public class Tasks {
     public static void printCompletedTasks() {
         List<Todo> completedTasks = todoCommand.viewCompletedTasks();
 
-        listEmpty(completedTasks.size());
+        printListTitle("내 시청 기록 (%d)\n", completedTasks.size());
 
         if (completedTasks.size() != 0) {
-            System.out.println();
-            System.out.println(line);
-            System.out.printf("내 시청 기록 (%d)\n", completedTasks.size());
-            System.out.println(line);
             System.out.printf("%s\n", listHead(false));
             for (int i = 0; i < completedTasks.size(); i++) {
                 Todo task = completedTasks.get(i);
                 System.out.println((i + 1) + printTodoList(task));
             }
+        } else {
+            listEmpty();
         }
     }
 
@@ -102,33 +100,28 @@ public class Tasks {
         List<Todo> pendingTasks = todoCommand.viewPendingTasks();
         List<Todo> completedTasks = todoCommand.viewCompletedTasks();
 
-        listEmpty(pendingTasks.size());
+        printListTitle("시청 할 애니 목록 (%d)\n", pendingTasks.size());
 
         if (pendingTasks.size() != 0) {
-            System.out.println();
-            System.out.println(line);
-            System.out.printf("시청 할 애니 목록 (%d)\n", pendingTasks.size());
-            System.out.println(line);
             System.out.printf("%s\n", listHead(true));
             for (int i = 0; i < pendingTasks.size(); i++) {
                 Todo todo = pendingTasks.get(i);
                 printTasks(todo, i, Ansi.green);
             }
+        } else {
+            listEmpty();
         }
-        System.out.println(line);
 
-        listEmpty(completedTasks.size());
+        printListTitle("내 시청 기록 (%d)\n", completedTasks.size());
 
         if (completedTasks.size() != 0) {
-            System.out.println();
-            System.out.println(line);
-            System.out.printf("내 시청 기록 (%d)\n", completedTasks.size());
-            System.out.println(line);
             System.out.printf("%s\n", listHead(true));
             for (int i = 0; i < completedTasks.size(); i++) {
                 Todo todo = completedTasks.get(i);
                 printTasks(todo, i, Ansi.ligthGray);
             }
+        } else {
+            listEmpty();
         }
     }
 

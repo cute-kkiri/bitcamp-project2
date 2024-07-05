@@ -228,7 +228,7 @@ public class TodoCommand implements MethodInterface {
                             if (updateMemo.equals("0")) {
                                 break;
                             }
-                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/N)", task.getTodo());
+                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/default: N)", task.getTodo());
                             if (command.equalsIgnoreCase("Y")) {
                                 task.check();
                                 task.inputMemo(updateMemo);
