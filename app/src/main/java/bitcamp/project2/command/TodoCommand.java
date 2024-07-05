@@ -1,11 +1,8 @@
 package bitcamp.project2.command;
 
-import bitcamp.project2.util.Menus;
-import bitcamp.project2.util.MethodInterface;
-import bitcamp.project2.util.Prompt;
-import bitcamp.project2.util.TaskValidator;
+import bitcamp.project2.util.*;
 import bitcamp.project2.vo.Todo;
-import bitcamp.project2.util.Tasks;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -54,10 +51,7 @@ public class TodoCommand implements MethodInterface {
                 printSubMenu(new String[]{"선택 삭제", "전체 삭제"});
                 int menuNo = Prompt.inputInt("편집/삭제 >>");
                 Todo[] taskArray = getPendingTasks();
-                if (menuNo == 9) {
-                    editTask();
-                    break;
-                }
+
                 if (taskArray == null) {
                     System.out.println("등록된 애니가 없습니다.");
                     break;
@@ -103,6 +97,11 @@ public class TodoCommand implements MethodInterface {
                         System.out.println("유효한 번호를 입력해주세요.");
                         break;
                 }
+
+                if (menuNo == 9) {
+                    // editTask();
+                    return 0;
+                }
             } catch (NumberFormatException ex) {
                 System.out.println("숫자로 메뉴 번호를 입력하세요.");
             }
@@ -130,7 +129,7 @@ public class TodoCommand implements MethodInterface {
             return 1;
         } else {
             System.out.println("삭제 취소.");
-            removeTask();
+            // removeTask();
             return 0;
         }
     }
@@ -297,7 +296,7 @@ public class TodoCommand implements MethodInterface {
                     removeTask();
                     break;
                 case 9:
-                    Menus.execute();
+                    // Menus.execute();
                     break;
                 default:
                     System.out.println("유효한 번호를 입력해주세요.");
@@ -312,7 +311,7 @@ public class TodoCommand implements MethodInterface {
         for (int i = 0; i < list.length; i++) {
             System.out.printf("%d. %s\n", (i + 1), list[i]);
         }
-        System.out.println("9. 이전");
+        System.out.println(Ansi.yellow + "9. 이전" + Ansi.reset);
     }
 
     public int getTaskArrayNo(Todo[] taskArray, int no) {

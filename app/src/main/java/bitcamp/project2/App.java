@@ -4,13 +4,8 @@
 package bitcamp.project2;
 
 
-import bitcamp.project2.command.TodoCommand;
 import bitcamp.project2.util.Ansi;
 import bitcamp.project2.util.Menus;
-import bitcamp.project2.util.Prompt;
-import bitcamp.project2.util.Tasks;
-import bitcamp.project2.vo.Todo;
-import java.util.List;
 
 import static bitcamp.project2.util.Tasks.*;
 
@@ -25,7 +20,7 @@ public class App {
     static void printAniLog() {
 
         System.out.println(
-                Ansi.yellow
+                Ansi.brightYellow
                 + " ______                      __                          \n"
             + "/\\  _  \\              __    /\\ \\                         \n"
             + "\\ \\ \\L\\ \\     ___    /\\_\\   \\ \\ \\        ___      __     \n"

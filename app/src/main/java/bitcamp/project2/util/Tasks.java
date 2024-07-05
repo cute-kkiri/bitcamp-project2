@@ -118,7 +118,7 @@ public class Tasks {
             System.out.printf("%s\n", listHead(true));
             for (int i = 0; i < completedTasks.size(); i++) {
                 Todo todo = completedTasks.get(i);
-                printTasks(todo, i, Ansi.ligthGray);
+                printTasks(todo, i, Ansi.lightGray);
             }
         } else {
             listEmpty();
