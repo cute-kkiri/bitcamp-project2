@@ -179,7 +179,8 @@ public class TodoCommand implements MethodInterface {
                         String oldTitle = task.getTodo();
                         String title = Prompt.input("%s (%s) >>", "제목 수정", task.getTodo());
                         String oldMemo = task.getMemo();
-                        String memo = Prompt.input("%s (%s) >>", "메모 수정", task.getMemo());;
+                        String memo = Prompt.input("%s (%s) >>", "메모 수정", task.getMemo());
+                        ;
                         task.inputTodo(!title.isEmpty() ? title : oldTitle);
                         task.inputMemo(!memo.isEmpty() ? memo : oldMemo);
 
@@ -297,7 +298,6 @@ public class TodoCommand implements MethodInterface {
         } catch (NumberFormatException ex) {
             System.out.println("숫자로 메뉴 번호를 입력해주세요.");
         }
-
     }
 
     void printSubMenu(String[] list) {
