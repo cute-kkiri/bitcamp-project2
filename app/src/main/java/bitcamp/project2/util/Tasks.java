@@ -13,7 +13,7 @@ public class Tasks {
     static String priorityIndex4 = "🙂";
 
     public static TodoCommand todoCommand = new TodoCommand();
-    public static String line = "--------------------------------------------------";
+    public static String line = "------------------------------------";
 
     private static String listHead(boolean detail) {
         if (detail) {
@@ -25,7 +25,7 @@ public class Tasks {
 
     private static String printTodoList(Todo todo) {
         String emoji = getEmoji(todo.getPriorityIndex());
-        return "\t \t \t" + emoji + " \t " + todo.getTodo();
+        return "\t " + emoji + " \t " + todo.getTodo();
     }
 
     public static void listEmpty(int size) {
@@ -155,7 +155,7 @@ public class Tasks {
     public static void printTasks(Todo todo, int i, String ansi) {
         String emoji = getEmoji(todo.getPriorityIndex());
         System.out.println(
-            (i + 1) + " \t \t" + emoji + "\t \t " +
+            (i + 1) + " \t " + emoji + "\t " +
                 todo.getTodo() + ansi + " [" + todo.getMemo() + "]"
                 + Ansi.reset);
     }

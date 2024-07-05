@@ -8,6 +8,7 @@ import bitcamp.project2.util.Tasks;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static bitcamp.project2.util.Tasks.*;
@@ -165,17 +166,22 @@ public class TodoCommand implements MethodInterface {
 
                 while (true) {
                     try {
+                        int oldPriorityIndex = task.getPriorityIndex();
                         int priorityIndex = Prompt.inputInt("%s (%d) >>", "애정도 수정",
                             task.getPriorityIndex());
+
                         if (priorityIndex >= 1 && priorityIndex <= 4) {
                             task.inputPriorityIndex(priorityIndex);
                         } else {
                             System.out.println("유효한 애정 값이 아닙니다.");
                             continue;
                         }
-                        task.inputTodo(
-                            Prompt.input("%s (%s) >>", "제목 수정", task.getTodo()));
-                        task.inputMemo(Prompt.input("%s (%s) >>", "메모 수정", task.getMemo()));
+                        String oldTitle = task.getTodo();
+                        String title = Prompt.input("%s (%s) >>", "제목 수정", task.getTodo());
+                        String oldMemo = task.getMemo();
+                        String memo = Prompt.input("%s (%s) >>", "메모 수정", task.getMemo());;
+                        task.inputTodo(!title.isEmpty() ? title : oldTitle);
+                        task.inputMemo(!memo.isEmpty() ? memo : oldMemo);
 
                         System.out.println("수정 완료.");
                         printPendingTasks();
