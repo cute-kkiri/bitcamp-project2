@@ -65,7 +65,7 @@ public class Menus {
         for (int i = 0; i < menus.length; i++) {
             System.out.printf("%d. %s\t\t", (i + 1), menus[i]);
         }
-        System.out.println(Ansi.orange + "0. 종료" + Ansi.reset);
+        System.out.println(Ansi.yellow + "0. 종료" + Ansi.reset);
     }
 
     static boolean isValidateMenu(int menuNo, String[] menus) {

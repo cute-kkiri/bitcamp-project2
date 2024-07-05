@@ -35,7 +35,7 @@ public class Tasks {
     public static void printListTitle(String format, Object... args) {
         System.out.println();
         System.out.println(line);
-        System.out.printf(format + " ", args);
+        System.out.printf(format, args);
         System.out.println(line);
     }
 

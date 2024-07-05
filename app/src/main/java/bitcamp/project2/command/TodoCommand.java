@@ -118,7 +118,7 @@ public class TodoCommand implements MethodInterface {
             return 0;
         }
 
-        String command = Prompt.input("전체 삭제하시겠습니까?(Y/default: N)");
+        String command = Prompt.input("전체 삭제하시겠습니까?(Y/기본값: N)");
         int size = todoList.size();
 
         if (command.equalsIgnoreCase("Y")) {
@@ -233,7 +233,7 @@ public class TodoCommand implements MethodInterface {
                             if (updateMemo.equals("0")) {
                                 break;
                             }
-                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/default: N)",
+                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/기본값: N)",
                                 task.getTodo());
                             if (command.equalsIgnoreCase("Y")) {
                                 task.check();
