@@ -1,6 +1,19 @@
 package bitcamp.project2.util;
 
-// 유효성 검사 메소드 모아놓기
+import bitcamp.project2.vo.Todo;
+
 public class TaskValidator {
 
+    public boolean isValidatePriorityIndex(int priorityIndex) {
+        return priorityIndex >= 1 && priorityIndex <= 4;
+    }
+
+    public boolean isValidateArraySize(int no, int length) {
+        return no >= 1 && no <= length;
+    }
+
+    public boolean taskArrayisNull(Todo[] taskArray) {
+        return taskArray == null;
+    }
+    
 }

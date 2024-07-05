@@ -3,6 +3,7 @@ package bitcamp.project2.command;
 import bitcamp.project2.util.Menus;
 import bitcamp.project2.util.MethodInterface;
 import bitcamp.project2.util.Prompt;
+import bitcamp.project2.util.TaskValidator;
 import bitcamp.project2.vo.Todo;
 import bitcamp.project2.util.Tasks;
 import java.util.ArrayList;
@@ -16,9 +17,11 @@ import static bitcamp.project2.util.Tasks.*;
 public class TodoCommand implements MethodInterface {
 
     private List<Todo> todoList;
+    private TaskValidator taskValidator;
 
     public TodoCommand() {
         this.todoList = new ArrayList<>();
+        this.taskValidator = new TaskValidator();
     }
 
     @Override
@@ -28,7 +31,7 @@ public class TodoCommand implements MethodInterface {
         while (true) {
             try {
                 int priorityIndex = Prompt.inputInt("애정도 설정 (1~4)>>");
-                if (priorityIndex >= 1 && priorityIndex <= 4) {
+                if (taskValidator.isValidatePriorityIndex(priorityIndex)) {
                     Todo todoItem = new Todo(todo, memo, priorityIndex);
                     todoList.add(todoItem);
                 } else {
@@ -52,6 +55,7 @@ public class TodoCommand implements MethodInterface {
                 int menuNo = Prompt.inputInt("편집/삭제 >>");
                 Todo[] taskArray = getPendingTasks();
                 if (menuNo == 9) {
+                    editTask();
                     break;
                 }
                 if (taskArray == null) {
@@ -64,25 +68,28 @@ public class TodoCommand implements MethodInterface {
                         try {
                             printPendingTasks();
                             System.out.println();
-                            int no = Prompt.inputInt("삭제할 목록 번호 (이전: 0)>>");
-                            int updateNo;
 
-                            if (no == 0) {
-                                continue;
-                            }
+                            while (true) {
+                                int no = Prompt.inputInt("삭제할 목록 번호 (이전: 0)>>");
+                                int updateNo;
 
-                            if (no >= 1 && no <= taskArray.length) {
-                                updateNo = taskArray[no - 1].getNo();
-                                for (int i = 0; i < todoList.size(); i++) {
-                                    if (todoList.get(i).getNo() == updateNo) {
-                                        todoList.remove(i);
-                                        break;
-                                    }
+                                if (no == 0) {
+                                    break;
                                 }
-                                printPendingTasks();
-                                System.out.println("삭제 완료.");
-                            } else {
-                                System.out.println("잘못된 번호입니다.");
+
+                                if (taskValidator.isValidateArraySize(no, taskArray.length)) {
+                                    updateNo = getTaskArrayNo(taskArray, no);
+                                    for (int i = 0; i < todoList.size(); i++) {
+                                        if (todoList.get(i).getNo() == updateNo) {
+                                            todoList.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    printPendingTasks();
+                                    System.out.println("삭제 완료.");
+                                } else {
+                                    System.out.println("잘못된 번호입니다.");
+                                }
                             }
 
                         } catch (NumberFormatException ex) {
@@ -107,7 +114,7 @@ public class TodoCommand implements MethodInterface {
     @Override
     public int removeAllTask() {
         Todo[] taskArray = getPendingTasks();
-        if (taskArray == null) {
+        if (taskValidator.taskArrayisNull(taskArray)) {
             System.out.println("등록된 애니가 없습니다.");
             return 0;
         }
@@ -133,7 +140,7 @@ public class TodoCommand implements MethodInterface {
         while (true) {
             Todo[] taskArray = Tasks.getPendingTasks();
 
-            if (taskArray == null) {
+            if (taskValidator.taskArrayisNull(taskArray)) {
                 System.out.println("등록된 애니가 없습니다.");
                 break;
             }
@@ -149,8 +156,8 @@ public class TodoCommand implements MethodInterface {
                     break;
                 }
 
-                if (no >= 1 && no <= taskArray.length) {
-                    updateNo = taskArray[no - 1].getNo();
+                if (taskValidator.isValidateArraySize(no, taskArray.length)) {
+                    updateNo = getTaskArrayNo(taskArray, no);
                 } else {
                     System.out.println("잘못된 번호입니다.");
                     continue;
@@ -166,11 +173,10 @@ public class TodoCommand implements MethodInterface {
 
                 while (true) {
                     try {
-                        int oldPriorityIndex = task.getPriorityIndex();
                         int priorityIndex = Prompt.inputInt("%s (%d) >>", "애정도 수정",
                             task.getPriorityIndex());
 
-                        if (priorityIndex >= 1 && priorityIndex <= 4) {
+                        if (taskValidator.isValidatePriorityIndex(priorityIndex)) {
                             task.inputPriorityIndex(priorityIndex);
                         } else {
                             System.out.println("유효한 애정 값이 아닙니다.");
@@ -180,7 +186,7 @@ public class TodoCommand implements MethodInterface {
                         String title = Prompt.input("%s (%s) >>", "제목 수정", task.getTodo());
                         String oldMemo = task.getMemo();
                         String memo = Prompt.input("%s (%s) >>", "메모 수정", task.getMemo());
-                        ;
+
                         task.inputTodo(!title.isEmpty() ? title : oldTitle);
                         task.inputMemo(!memo.isEmpty() ? memo : oldMemo);
 
@@ -211,11 +217,11 @@ public class TodoCommand implements MethodInterface {
                 if (no == 0) {
                     break;
                 }
-                if (no < 0 || no > taskArray.length) {
+                if (!taskValidator.isValidateArraySize(no, taskArray.length)) {
                     System.out.println("유효한 번호가 아닙니다.");
                     continue;
                 }
-                int checkNo = taskArray[no - 1].getNo();
+                int checkNo = getTaskArrayNo(taskArray, no);
 
                 String command;
                 String updateMemo;
@@ -228,7 +234,8 @@ public class TodoCommand implements MethodInterface {
                             if (updateMemo.equals("0")) {
                                 break;
                             }
-                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/default: N)", task.getTodo());
+                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/default: N)",
+                                task.getTodo());
                             if (command.equalsIgnoreCase("Y")) {
                                 task.check();
                                 task.inputMemo(updateMemo);
@@ -306,6 +313,11 @@ public class TodoCommand implements MethodInterface {
             System.out.printf("%d. %s\n", (i + 1), list[i]);
         }
         System.out.println("9. 이전");
+    }
+
+    public int getTaskArrayNo(Todo[] taskArray, int no) {
+        return taskArray[no - 1].getNo();
+
     }
 
     public void loadDummyData() {

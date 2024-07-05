@@ -48,7 +48,6 @@ public class Menus {
                 break;
             case "애니 목록 편집":
                 todoCommand.editTask();
-                // todoCommand.updateTask();
                 printMenu();
                 break;
             case "기록 하기":
