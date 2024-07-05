@@ -221,7 +221,7 @@ public class TodoCommand implements MethodInterface {
                             if (updateMemo.equals("0")) {
                                 break;
                             }
-                            command = Prompt.input("(%s)시청기록을 하시겠습니까?(Y/N)", task.getTodo());
+                            command = Prompt.input("(%s)시청 기록을 하시겠습니까?(Y/N)", task.getTodo());
                             if (command.equalsIgnoreCase("Y")) {
                                 task.check();
                                 task.inputMemo(updateMemo);
@@ -303,13 +303,18 @@ public class TodoCommand implements MethodInterface {
     }
 
     public void loadDummyData() {
-        todoList.add(new Todo("오버로드", "띵작", 3, true));
+        todoList.add(
+            new Todo("오버로드", "액션 괜찮다 맨날 마법이나 쓰면서 한 방에 보내 버리는 거만 봐서 그런지 신선하고 좋다.", 3, true));
         todoList.add(new Todo("강철의 연금술사", "4화 보는 중", 2, false));
-        todoList.add(new Todo("암살교실", "짱 재밌네~", 2, true));
+        todoList.add(
+            new Todo("암살교실", "처음에는 코미디처럼 봤는데 점점 갈수록 눈물이 나오고 명작이라는 말이 저절로 나온다.", 2, true));
         todoList.add(new Todo("최애의 아이", "2화 보는 중", 2, false));
-        todoList.add(new Todo("마슐", "짱짱 재밌음", 4, true));
-        todoList.add(new Todo("진격의 거인", "시청 전", 4, false));
-        todoList.add(new Todo("전생슬", "마지막 화", 1, false));
+        todoList.add(
+            new Todo("스파이 패밀리", "애니도 없이 천오백만 부 돌파라길래 얼마나 재밌으려나 했는데 이건 뭐 그냥 와 밖에 안 나옴.", 4,
+                true));
+        todoList.add(
+            new Todo("진격의 거인", "애니 보면서 이렇게 긴 여운 남긴 작품은 없었다. 특히 엔딩 크레딧 장면.. 전부 미쳤음", 1, true));
+        todoList.add(new Todo("전생했더니 슬라임이었던 건에 대하여", "마지막 화", 1, false));
         todoList.add(new Todo("귀멸의 칼날", "시즌3 존버 중", 4, false));
         todoList.add(new Todo("주술회전", "16화", 3, false));
         todoList.add(new Todo("무직전생", "2화 14분 30초", 2, false));

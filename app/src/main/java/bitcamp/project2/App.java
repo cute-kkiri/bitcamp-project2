@@ -16,8 +16,23 @@ import static bitcamp.project2.util.Tasks.*;
 public class App {
 
     public static void main(String[] args) {
+        printAniLog();
         todoCommand.loadDummyData();
         Menus.execute();
+    }
+
+    static void printAniLog() {
+
+        System.out.println(" ______                      __                          \n"
+            + "/\\  _  \\              __    /\\ \\                         \n"
+            + "\\ \\ \\L\\ \\     ___    /\\_\\   \\ \\ \\        ___      __     \n"
+            + " \\ \\  __ \\  /' _ `\\  \\/\\ \\   \\ \\ \\  __  / __`\\  /'_ `\\   \n"
+            + "  \\ \\ \\/\\ \\ /\\ \\/\\ \\  \\ \\ \\   \\ \\ \\L\\ \\/\\ \\L\\ \\/\\ \\L\\ \\  \n"
+            + "   \\ \\_\\ \\_\\\\ \\_\\ \\_\\  \\ \\_\\   \\ \\____/\\ \\____/\\ \\____ \\ \n"
+            + "    \\/_/\\/_/ \\/_/\\/_/   \\/_/    \\/___/  \\/___/  \\/___L\\ \\\n"
+            + "                                                  /\\____/\n"
+            + "                                                  \\_/__/ ");
+
     }
 
 

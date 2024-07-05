@@ -18,6 +18,7 @@ public class Menus {
                 int menuNo = Integer.parseInt(command);
                 if (menuNo == 0) {
                     System.out.println("종료.");
+                    Prompt.close();
                     break;
                 } else {
                     String menuTitle = getMenuTitle(menuNo, menus);
