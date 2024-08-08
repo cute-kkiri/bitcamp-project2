@@ -1,0 +1,125 @@
+@startuml
+class bitcamp.project2.util.Tasks {
+~ {static} String priorityIndex1
+~ {static} String priorityIndex2
+~ {static} String priorityIndex3
+~ {static} String priorityIndex4
++ {static} TodoCommand todoCommand
++ {static} String line
+- {static} String listHead(boolean)
+- {static} String printTodoList(Todo)
++ {static} void listEmpty()
++ {static} void printListTitle(String,Object)
++ {static} void printPendingTasks()
++ {static} Todo[] getPendingTasks()
++ {static} Todo[] getCompletedTasks()
++ {static} void printCompletedTasks()
++ {static} void printAllTasks()
++ {static} String getEmoji(int)
++ {static} void printTasks(Todo,int,String)
+}
+
+
+class bitcamp.project2.util.Prompt {
+~ {static} Scanner keyboardScanner
++ {static} String input(String,Object)
++ {static} int inputInt(String,Object)
++ {static} void close()
+}
+
+
+interface bitcamp.project2.util.MethodInterface {
+~ int addTask()
+~ int removeTask()
+~ int removeAllTask()
+~ int updateTask()
+~ void viewTask()
+~ void taskCheck()
+~ List<Todo> viewTasks()
+~ List<Todo> viewCompletedTasks()
+~ List<Todo> viewPendingTasks()
+}
+
+class bitcamp.project2.command.TodoCommand {
+- List<Todo> todoList
+- TaskValidator taskValidator
++ int addTask()
++ int removeTask()
++ int removeAllTask()
++ int updateTask()
++ void taskCheck()
++ void viewTask()
++ List<Todo> viewTasks()
++ List<Todo> viewCompletedTasks()
++ List<Todo> viewPendingTasks()
++ void editTask()
+~ void printSubMenu(String[])
++ int getTaskArrayNo(Todo[],int)
++ void loadDummyData()
+}
+
+
+class bitcamp.project2.util.Menus {
+~ {static} String[] menus
++ {static} void execute()
++ {static} void processMenu(String)
++ {static} void printMenu()
+~ {static} boolean isValidateMenu(int,String[])
+~ {static} String getMenuTitle(int,String[])
+}
+
+
+class bitcamp.project2.App {
++ {static} void main(String[])
+~ {static} void printAniLog()
+}
+
+class bitcamp.project2.vo.Todo {
+- {static} int seqNo
+- int no
+- String todo
+- boolean isCompleted
+- String memo
+- int priorityIndex
++ String toString()
++ boolean equals(Object)
++ int hashCode()
++ int nextSeqNo()
++ int getNo()
++ String getTodo()
++ void inputTodo(String)
++ boolean isCompleted()
++ void check()
++ String getMemo()
++ void inputMemo(String)
++ int getPriorityIndex()
++ void inputPriorityIndex(int)
+}
+
+
+class bitcamp.project2.util.TaskValidator {
++ boolean isValidatePriorityIndex(int)
++ boolean isValidateArraySize(int,int)
++ boolean taskArrayisNull(Todo[])
+}
+
+class bitcamp.project2.util.Ansi {
++ {static} String strikeout
++ {static} String bold
++ {static} String gray
++ {static} String lightGray
++ {static} String cyan
++ {static} String green
++ {static} String red
++ {static} String lightRed
++ {static} String orange
++ {static} String yellow
++ {static} String brightYellow
++ {static} String lightYellow
++ {static} String reset
+}
+
+
+
+bitcamp.project2.command.MethodInterface <|.. bitcamp.project2.command.TodoCommand
+@enduml
